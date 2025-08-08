@@ -49,11 +49,11 @@ if (!defined('ABSPATH')) {
             $(`.spc-view-btn[data-view="${defaultView}"]`).addClass('active');
             $(`.spc-products-${defaultView}`).addClass('active');
 
-            // Show appropriate skeleton
-            $('.spc-skeleton-grid').show();
-            $('.spc-skeleton-slider').hide();
+            // Show appropriate card loader
+            $('.spc-card-loader-grid').show();
+            $('.spc-card-loader-slider').hide();
 
-            // Simulate loading delay for skeleton
+            // Simulate loading delay for card loader
             setTimeout(() => {
                 $('#spc-products-loading').fadeOut(300, function() {
                     $('#spc-products-grid').fadeIn(300);
@@ -432,16 +432,16 @@ if (!defined('ABSPATH')) {
                 $('.spc-products-grid').show().addClass('active');
                 $('.spc-products-slider').hide().removeClass('active');
 
-                // Update skeleton for grid
-                $('.spc-skeleton-grid').show();
-                $('.spc-skeleton-slider').hide();
+                // Update card loader for grid
+                $('.spc-card-loader-grid').show();
+                $('.spc-card-loader-slider').hide();
             } else {
                 $('.spc-products-grid').hide().removeClass('active');
                 $('.spc-products-slider').show().addClass('active');
 
-                // Update skeleton for slider  
-                $('.spc-skeleton-grid').hide();
-                $('.spc-skeleton-slider').show();
+                // Update card loader for slider  
+                $('.spc-card-loader-grid').hide();
+                $('.spc-card-loader-slider').show();
             }
 
             // Sync selection states between layouts

@@ -25,19 +25,35 @@ if (!defined('ABSPATH')) {
         <div class="spc-main-content">
             <!-- Products Section -->
             <div class="spc-products-section">
-                <!-- Products Grid with Skeleton Loader -->
+                <!-- Products Grid with Card Loader -->
                 <div id="spc-products-loading" class="spc-products-container">
-                    <!-- Skeleton for Flex Grid -->
-                    <div class="spc-skeleton-grid">
+                    <!-- Card Loaders for Grid -->
+                    <div class="spc-card-loader-grid">
                         <?php for ($i = 0; $i < 6; $i++): ?>
-                        <div class="spc-skeleton spc-skeleton-product"></div>
+                        <div class="spc-card-loader spc-card-loader-item">
+                            <div class="spc-card-loader-image">
+                                <div class="spc-card-loader-shimmer"></div>
+                            </div>
+                            <div class="spc-card-loader-overlay">
+                                <div class="spc-card-loader-price"></div>
+                                <div class="spc-card-loader-btn"></div>
+                            </div>
+                        </div>
                         <?php endfor; ?>
                     </div>
-                    <!-- Skeleton for Slider -->
-                    <div class="spc-skeleton-slider" style="display: none;">
-                        <div class="spc-skeleton-slides">
+                    <!-- Card Loaders for Slider -->
+                    <div class="spc-card-loader-slider" style="display: none;">
+                        <div class="spc-card-loader-slides">
                             <?php for ($i = 0; $i < 4; $i++): ?>
-                            <div class="spc-skeleton spc-skeleton-slide"></div>
+                            <div class="spc-card-loader spc-card-loader-slide">
+                                <div class="spc-card-loader-image">
+                                    <div class="spc-card-loader-shimmer"></div>
+                                </div>
+                                <div class="spc-card-loader-overlay">
+                                    <div class="spc-card-loader-price"></div>
+                                    <div class="spc-card-loader-btn"></div>
+                                </div>
+                            </div>
                             <?php endfor; ?>
                         </div>
                     </div>

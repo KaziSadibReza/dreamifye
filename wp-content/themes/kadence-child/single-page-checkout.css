@@ -1,6 +1,6 @@
 /**
  * Single Page Checkout Styles - Modern Design
- * Using custom color palette with skeleton loaders and toast notifications
+ * Using custom color palette with card loaders and toast notifications
  * 
  * @package KadenceChild
  * @version 2.0.0
@@ -69,63 +69,97 @@
 }
 
 /* =============================================================================
-   SKELETON LOADER ANIMATIONS
+   CARD LOADER ANIMATIONS - SHIMMER EFFECT
    ============================================================================= */
 
-@keyframes spc-skeleton-pulse {
-  0% {
-    background-color: #f3f3f3;
-  }
-  50% {
-    background-color: #e0e0e0;
-  }
-  100% {
-    background-color: #f3f3f3;
-  }
-}
-
-@keyframes spc-skeleton-wave {
+@keyframes spc-card-shimmer {
   0% {
     transform: translateX(-100%);
   }
-  50% {
-    transform: translateX(100%);
-  }
   100% {
     transform: translateX(100%);
   }
 }
 
-.spc-skeleton {
-  background: linear-gradient(90deg, #f3f3f3 25%, #e0e0e0 50%, #f3f3f3 75%);
-  background-size: 200% 100%;
-  animation: spc-skeleton-wave 1.5s infinite linear;
-  border-radius: var(--spc-border-radius-sm);
+@keyframes spc-card-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Card Loader Base */
+.spc-card-loader {
+  background: var(--spc-bg-card);
+  border-radius: var(--spc-border-radius);
+  box-shadow: var(--spc-shadow-sm);
+  border: 3px solid rgba(255, 182, 193, 0.1);
   overflow: hidden;
   position: relative;
+  animation: spc-card-pulse 2s ease-in-out infinite;
+  transition: var(--spc-transition);
 }
 
-.spc-skeleton-text {
-  height: 1rem;
-  margin-bottom: 0.5rem;
-  border-radius: 4px;
+.spc-card-loader:hover {
+  box-shadow: var(--spc-shadow-md);
+  transform: translateY(-2px);
+  border-color: rgba(255, 182, 193, 0.3);
 }
 
-.spc-skeleton-text:last-child {
-  margin-bottom: 0;
-  width: 60%;
-}
-
-.spc-skeleton-card {
-  height: 200px;
-  border-radius: var(--spc-border-radius);
-  margin-bottom: var(--spc-space-md);
-}
-
-.spc-skeleton-button {
-  height: 3rem;
-  border-radius: var(--spc-border-radius-sm);
+.spc-card-loader-image {
+  position: relative;
   width: 100%;
+  height: 300px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  overflow: hidden;
+}
+
+.spc-card-loader-shimmer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    transparent 100%
+  );
+  animation: spc-card-shimmer 2s infinite;
+}
+
+.spc-card-loader-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: var(--spc-space-lg);
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.4));
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.spc-card-loader-price {
+  width: 80px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 6px;
+  animation: spc-card-pulse 2s ease-in-out infinite 0.3s;
+  backdrop-filter: blur(5px);
+}
+
+.spc-card-loader-btn {
+  width: 48px;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  animation: spc-card-pulse 2s ease-in-out infinite 0.6s;
+  backdrop-filter: blur(5px);
 }
 
 /* =============================================================================
@@ -606,35 +640,34 @@
   color: white;
 }
 
-/* Skeleton Loaders */
-.spc-skeleton-grid {
+/* Card Loader Layouts */
+.spc-card-loader-grid {
   display: flex;
   flex-wrap: wrap;
   gap: var(--spc-space-lg);
+  justify-content: center;
 }
 
-.spc-skeleton-product {
+.spc-card-loader-item {
   flex: 1;
   min-width: 280px;
   max-width: 350px;
   height: 300px;
-  border-radius: var(--spc-border-radius);
 }
 
-.spc-skeleton-slider {
+.spc-card-loader-slider {
   width: 100%;
 }
 
-.spc-skeleton-slides {
+.spc-card-loader-slides {
   display: flex;
   gap: var(--spc-space-lg);
   overflow: hidden;
 }
 
-.spc-skeleton-slide {
+.spc-card-loader-slide {
   flex: 0 0 280px;
   height: 300px;
-  border-radius: var(--spc-border-radius);
 }
 
 /* Products Grid Layout */
@@ -968,21 +1001,25 @@
     font-size: 0.9rem;
   }
 
-  .spc-skeleton-grid {
+  .spc-card-loader-grid {
     flex-direction: column;
   }
 
-  .spc-skeleton-product {
+  .spc-card-loader-item {
     min-width: auto;
     max-width: none;
   }
 
-  .spc-skeleton-slides {
+  .spc-card-loader-slides {
     gap: var(--spc-space-md);
   }
 
-  .spc-skeleton-slide {
+  .spc-card-loader-slide {
     flex: 0 0 250px;
+  }
+
+  .spc-card-loader-image {
+    height: 250px;
   }
 
   .spc-product-image-container {
