@@ -663,11 +663,13 @@
   display: flex;
   gap: var(--spc-space-lg);
   overflow: hidden;
+  justify-content: center;
 }
 
 .spc-card-loader-slide {
   flex: 0 0 280px;
   height: 300px;
+  max-width: 350px;
 }
 
 /* Products Grid Layout */
@@ -692,7 +694,7 @@
   position: relative;
 }
 
-/* Products Slider Layout */
+/* Products Slider Layout with Swiper.js */
 .spc-products-slider {
   width: 100%;
   position: relative;
@@ -706,32 +708,24 @@
 }
 
 .spc-slider-track {
-  display: flex;
-  gap: var(--spc-space-lg);
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  padding: var(--spc-space-sm) 0;
+  width: 100%;
   flex: 1;
-}
-
-.spc-slider-track::-webkit-scrollbar {
-  display: none;
-}
-
-.spc-slider-item {
-  flex: 0 0 280px;
-  background: var(--spc-bg-card);
-  border-radius: var(--spc-border-radius);
-  box-shadow: var(--spc-shadow-sm);
-  border: 3px solid transparent;
-  transition: var(--spc-transition);
-  cursor: pointer;
   overflow: hidden;
-  position: relative;
+  padding: var(--spc-space-sm) 0;
 }
 
+.spc-slider-track .swiper-wrapper {
+  display: flex;
+  align-items: stretch;
+}
+
+.spc-slider-track .swiper-slide {
+  width: auto;
+  flex-shrink: 0;
+  height: auto;
+}
+
+/* Custom Swiper Button Styles */
 .spc-slider-btn {
   width: 48px;
   height: 48px;
@@ -746,12 +740,37 @@
   justify-content: center;
   transition: var(--spc-transition);
   flex-shrink: 0;
+  z-index: 10;
 }
 
 .spc-slider-btn:hover {
   background: var(--spc-pink);
   color: white;
   transform: scale(1.1);
+}
+
+.spc-slider-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.spc-slider-btn:disabled:hover {
+  background: var(--spc-bg-card);
+  color: var(--spc-text-primary);
+}
+
+.spc-slider-item {
+  width: 280px;
+  max-width: 350px;
+  background: var(--spc-bg-card);
+  border-radius: var(--spc-border-radius);
+  box-shadow: var(--spc-shadow-sm);
+  border: 3px solid transparent;
+  transition: var(--spc-transition);
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
 }
 
 /* Product Item Styling */
@@ -1012,10 +1031,12 @@
 
   .spc-card-loader-slides {
     gap: var(--spc-space-md);
+    justify-content: flex-start;
   }
 
   .spc-card-loader-slide {
     flex: 0 0 250px;
+    max-width: 280px;
   }
 
   .spc-card-loader-image {

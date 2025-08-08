@@ -28,7 +28,7 @@ if (!defined('ABSPATH')) {
                 <!-- Products Grid with Card Loader -->
                 <div id="spc-products-loading" class="spc-products-container">
                     <!-- Card Loaders for Grid -->
-                    <div class="spc-card-loader-grid">
+                    <div class="spc-card-loader-grid" style="display: none;">
                         <?php for ($i = 0; $i < 6; $i++): ?>
                         <div class="spc-card-loader spc-card-loader-item">
                             <div class="spc-card-loader-image">
@@ -41,10 +41,10 @@ if (!defined('ABSPATH')) {
                         </div>
                         <?php endfor; ?>
                     </div>
-                    <!-- Card Loaders for Slider -->
-                    <div class="spc-card-loader-slider" style="display: none;">
+                    <!-- Card Loaders for Slider (Default) -->
+                    <div class="spc-card-loader-slider">
                         <div class="spc-card-loader-slides">
-                            <?php for ($i = 0; $i < 4; $i++): ?>
+                            <?php for ($i = 0; $i < 3; $i++): ?>
                             <div class="spc-card-loader spc-card-loader-slide">
                                 <div class="spc-card-loader-image">
                                     <div class="spc-card-loader-shimmer"></div>
@@ -62,17 +62,17 @@ if (!defined('ABSPATH')) {
                 <!-- Actual Products Grid/Slider -->
                 <div id="spc-products-grid" class="spc-products-container" style="display: none;">
                     <div class="spc-layout-toggle">
-                        <button id="spc-grid-view" class="spc-view-btn active" data-view="grid">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M3 3h7v7H3V3zm0 11h7v7H3v-7zm11-11h7v7h-7V3zm0 11h7v7h-7v-7z" />
-                            </svg>
-                            Grid
-                        </button>
-                        <button id="spc-slider-view" class="spc-view-btn" data-view="slider">
+                        <button id="spc-slider-view" class="spc-view-btn active" data-view="slider">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M2 6h20v3H2V6zm0 5h20v3H2v-3zm0 5h20v3H2v-3z" />
                             </svg>
                             Slider
+                        </button>
+                        <button id="spc-grid-view" class="spc-view-btn" data-view="grid">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M3 3h7v7H3V3zm0 11h7v7H3v-7zm11-11h7v7h-7V3zm0 11h7v7h-7v-7z" />
+                            </svg>
+                            Grid
                         </button>
                     </div>
                     <?php echo SinglePageCheckout::load_template('products-grid', compact('atts')); ?>
