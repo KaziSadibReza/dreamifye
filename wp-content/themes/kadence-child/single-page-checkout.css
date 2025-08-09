@@ -742,7 +742,7 @@
 }
 
 .spc-slider-btn {
-  position: absolute;
+  position: absolute !important;
   width: 48px;
   height: 48px;
   border-radius: 50%;
