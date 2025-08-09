@@ -1,0 +1,624 @@
+/**
+ * ============================================================================
+ * SINGLE PAGE CHECKOUT - RESPONSIVE DESIGN
+ * ============================================================================
+ * 
+ * This file contains all responsive styles for the Single Page Checkout system.
+ * Organized by breakpoints for better maintainability.
+ * 
+ * Breakpoints:
+ * - Large Desktop: 1200px+
+ * - Desktop: 1024px - 1199px
+ * - Tablet: 768px - 1023px
+ * - Mobile Large: 481px - 767px
+ * - Mobile Small: 480px and below
+ * 
+ * @package KadenceChild
+ * @subpackage SinglePageCheckout
+ * @since 1.0.0
+ */
+
+/* =============================================================================
+   TABLET RESPONSIVE (1024px and below)
+   ============================================================================= */
+
+@media (max-width: 1024px) {
+  /* Container Adjustments */
+  .spc-container {
+    padding: 15px;
+  }
+
+  /* Main Layout Changes */
+  .spc-main-grid {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .spc-main-content {
+    flex: none;
+    max-width: 100%;
+    order: 1;
+  }
+
+  /* Cart Layout for Tablet */
+  .spc-sidebar-cart {
+    display: none;
+  }
+
+  .spc-mobile-cart {
+    display: block;
+    order: 2;
+  }
+
+  .spc-products-section {
+    order: 1;
+  }
+
+  .spc-checkout-section {
+    order: 3;
+    margin-top: 0;
+  }
+}
+
+/* =============================================================================
+   MOBILE LARGE RESPONSIVE (768px and below)
+   ============================================================================= */
+
+@media (max-width: 768px) {
+  .spc-order-table th,
+  .spc-order-table td {
+    padding: 12px 15px;
+    font-size: 0.9rem;
+  }
+  /* Container and Layout */
+  .spc-container {
+    padding: var(--spc-space-md);
+  }
+
+  .spc-main-grid {
+    flex-direction: column;
+    gap: var(--spc-space-md);
+    padding: 0px;
+  }
+
+  /* Typography */
+  .spc-section-title {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+  }
+
+  /* Cart Layout */
+  .spc-sidebar-cart {
+    position: static;
+    max-height: none;
+    overflow-y: visible;
+    display: none;
+  }
+
+  .spc-mobile-cart {
+    display: block;
+    order: 2;
+  }
+
+  .spc-main-content {
+    order: 1;
+  }
+
+  /* Products Grid */
+  .spc-products-grid {
+    flex-direction: column;
+    gap: var(--spc-space-md);
+  }
+
+  .spc-products-grid .spc-product-item,
+  .spc-slider-item {
+    min-width: auto;
+    max-width: none;
+  }
+
+  /* Product Image Containers */
+  .spc-product-image-container {
+    height: 250px;
+  }
+
+  .spc-card-loader-image {
+    height: 250px;
+  }
+
+  /* Slider Controls */
+  .spc-slider-container {
+    gap: var(--spc-space-sm);
+  }
+
+  .spc-slider-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .spc-slider-icon {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  /* Layout Toggle */
+  .spc-layout-toggle {
+    gap: var(--spc-space-xs);
+    margin-bottom: var(--spc-space-md);
+  }
+
+  .spc-view-btn {
+    padding: var(--spc-space-xs) var(--spc-space-md);
+    font-size: 0.9rem;
+  }
+
+  /* Card Loaders */
+  .spc-card-loader-grid {
+    flex-direction: column;
+  }
+
+  .spc-card-loader-item {
+    min-width: auto;
+    max-width: none;
+  }
+
+  .spc-card-loader-slides {
+    gap: var(--spc-space-md);
+  }
+
+  .spc-card-loader-slide {
+    flex: 0 0 250px;
+  }
+
+  /* Zoom Modal */
+  .spc-zoom-close {
+    top: -18px;
+    right: -18px;
+    width: 44px;
+    height: 44px;
+  }
+
+  .spc-zoom-close svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .spc-zoom-content {
+    max-width: 95vw;
+    max-height: 85vh;
+  }
+
+  /* Order Details */
+  .spc-order-details-grid {
+    flex-direction: column;
+  }
+
+  .spc-order-card {
+    min-width: auto;
+  }
+
+  .spc-success-title {
+    font-size: 2rem;
+  }
+
+  .spc-success-subtitle {
+    font-size: 1rem;
+  }
+
+  .spc-order-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .spc-btn {
+    width: 100%;
+    max-width: 250px;
+  }
+
+  .spc-info-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .spc-item-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  /* Checkout Form */
+  .spc-checkout-section .col2-set {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .spc-checkout-section .woocommerce-billing-fields,
+  .spc-checkout-section .woocommerce-shipping-fields {
+    padding: 0px;
+  }
+
+  .spc-checkout-section .form-row input[type="text"],
+  .spc-checkout-section .form-row input[type="email"],
+  .spc-checkout-section .form-row input[type="tel"],
+  .spc-checkout-section .form-row textarea,
+  .spc-checkout-section .form-row select {
+    padding: 10px 12px;
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+
+  .spc-checkout-section #place_order {
+    padding: 12px 20px;
+    font-size: 1rem;
+  }
+  .spc-checkout-section .woocommerce-additional-fields {
+    padding: 0px;
+  }
+  .spc-checkout-section .woocommerce-additional-fields h3 {
+    font-size: 1.2rem;
+  }
+  .spc-checkout-section #payment {
+    padding: 0px;
+    margin-top: 0px;
+    box-shadow: none;
+  }
+  .spc-checkout-section #payment ul {
+    padding: 0px !important;
+  }
+  .spc-checkout-section .woocommerce-terms-and-conditions-wrapper {
+    padding: 0px;
+    margin: 0px;
+  }
+  .woocommerce-privacy-policy-text {
+    margin: 0px !important;
+  }
+}
+
+/* =============================================================================
+   MOBILE SMALL RESPONSIVE (480px and below)
+   ============================================================================= */
+
+@media (max-width: 480px) {
+  .spc-section-title {
+    font-size: 1.5rem;
+  }
+
+  /* Container */
+  .spc-container {
+    padding: var(--spc-space-sm);
+  }
+
+  /* Card Components */
+  .spc-card-header,
+  .spc-card-footer {
+    padding: 15px;
+  }
+  .spc-card-body {
+    padding: 0px 15px;
+  }
+
+  .spc-product-content {
+    padding: var(--spc-space-sm);
+  }
+
+  /* Layout Toggle - Stack Vertically */
+  .spc-layout-toggle {
+    flex-direction: column;
+    gap: var(--spc-space-xs);
+  }
+
+  .spc-view-btn {
+    justify-content: center;
+  }
+
+  /* Slider Adjustments */
+  .spc-slider-track {
+    gap: var(--spc-space-md);
+  }
+
+  .spc-slider-item {
+    flex: 0 0 220px;
+  }
+
+  .spc-slider-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .spc-slider-icon {
+    width: 24px !important;
+    height: 24px !important;
+  }
+
+  /* Product Overlay */
+  .spc-product-overlay {
+    padding: var(--spc-space-md);
+    opacity: 1 !important;
+  }
+
+  .spc-product-overlay .spc-product-price {
+    font-size: 1rem;
+  }
+
+  /* Zoom Controls */
+  .spc-zoom-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  .spc-zoom-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Toast Notifications */
+  .spc-toast-container {
+    left: 0px;
+    right: 16px;
+    bottom: 16px;
+    max-width: none;
+  }
+
+  .spc-toast {
+    padding: var(--spc-space-sm);
+    gap: var(--spc-space-xs);
+    min-height: 48px;
+  }
+
+  .spc-toast-icon {
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+  }
+
+  .spc-toast-title {
+    font-size: 13px;
+  }
+
+  .spc-toast-message {
+    font-size: 12px;
+  }
+
+  .spc-toast-close {
+    width: 20px;
+    height: 20px;
+    font-size: 14px;
+  }
+  .spc-slider-prev {
+    left: -15px;
+  }
+  .spc-slider-next {
+    right: -15px;
+  }
+  .spc-category-section {
+    margin-bottom: 30px !important;
+  }
+}
+
+/* =============================================================================
+   CART ITEMS MOBILE OPTIMIZATIONS
+   ============================================================================= */
+
+@media (max-width: 768px) {
+  .spc-cart-item {
+    padding: var(--spc-space-sm);
+    gap: var(--spc-space-xs);
+  }
+
+  .spc-cart-item-image {
+    width: 45px;
+    height: 45px;
+  }
+
+  .spc-cart-item-title {
+    font-size: 0.9rem;
+    line-height: 1.2;
+  }
+
+  .spc-cart-item-price {
+    font-size: 0.8rem;
+  }
+
+  .spc-quantity-controls {
+    height: 22px;
+  }
+
+  .spc-quantity-btn {
+    width: 22px;
+    height: 22px;
+    font-size: 12px;
+  }
+
+  .spc-quantity-number {
+    min-width: 24px;
+    height: 22px;
+    font-size: 0.75rem;
+  }
+
+  .spc-remove-btn {
+    width: 18px;
+    height: 18px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .spc-cart-item {
+    padding: 8px;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .spc-cart-item-image {
+    width: 40px;
+    height: 40px;
+  }
+
+  .spc-cart-item-title {
+    font-size: 0.9rem;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+  }
+
+  .spc-cart-item-price {
+    font-size: 0.75rem;
+    margin: 1px 0;
+  }
+
+  .spc-cart-item-header {
+    margin-bottom: 1px;
+  }
+
+  .spc-quantity-controls {
+    height: 20px;
+  }
+
+  .spc-quantity-btn {
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+  }
+
+  .spc-quantity-number {
+    min-width: 22px;
+    height: 20px;
+    font-size: 0.7rem;
+    padding: 0 2px;
+  }
+
+  .spc-remove-btn {
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+  }
+}
+
+/* =============================================================================
+   LOADING STATES MOBILE
+   ============================================================================= */
+
+@media (max-width: 768px) {
+  .spc-loading::after {
+    width: 28px;
+    height: 28px;
+    border-width: 2px;
+  }
+}
+
+@media (max-width: 480px) {
+  .spc-loading::after {
+    width: 24px;
+    height: 24px;
+    border-width: 2px;
+  }
+}
+
+/* =============================================================================
+   ACCESSIBILITY IMPROVEMENTS FOR MOBILE
+   ============================================================================= */
+
+@media (max-width: 768px) {
+  /* Ensure touch targets are at least 44px */
+  .spc-btn,
+  .spc-slider-btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  .spc-zoom-btn {
+    min-height: 50px;
+    min-width: 50px;
+  }
+  /* Improve text readability */
+  .spc-cart-item-title,
+  .spc-product-overlay .spc-product-price {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* =============================================================================
+   LANDSCAPE ORIENTATION OPTIMIZATIONS
+   ============================================================================= */
+
+@media (max-width: 768px) and (orientation: landscape) {
+  .spc-container {
+    padding: var(--spc-space-sm) var(--spc-space-md);
+  }
+
+  .spc-product-image-container {
+    height: 200px;
+  }
+
+  .spc-main-grid {
+    gap: var(--spc-space-sm);
+  }
+}
+
+@media (max-width: 480px) and (orientation: landscape) {
+  .spc-layout-toggle {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .spc-product-image-container {
+    height: 180px;
+  }
+}
+
+/* =============================================================================
+   HIGH DPI DISPLAYS
+   ============================================================================= */
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .spc-cart-item-image,
+  .spc-product-image {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* =============================================================================
+   PRINT STYLES
+   ============================================================================= */
+
+@media print {
+  .spc-slider-btn,
+  .spc-zoom-btn,
+  .spc-layout-toggle,
+  .spc-toast-container,
+  .spc-loading {
+    display: none !important;
+  }
+
+  .spc-main-grid {
+    flex-direction: column;
+  }
+
+  .spc-sidebar-cart {
+    display: block !important;
+    position: static !important;
+  }
+
+  .spc-cart-item {
+    break-inside: avoid;
+  }
+}
+
+/* =============================================================================
+   REDUCED MOTION
+   ============================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .spc-loading::after,
+  .spc-cart-item,
+  .spc-product-item,
+  .spc-slider-btn,
+  .spc-zoom-btn,
+  .spc-toast {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .spc-cart-item:hover .spc-cart-item-image,
+  .spc-product-item:hover .spc-product-image {
+    transform: none !important;
+  }
+}

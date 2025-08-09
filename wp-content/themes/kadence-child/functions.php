@@ -34,6 +34,14 @@ function kadence_child_enqueue_styles() {
         '3.3.1' // Updated for enhanced checkout form design
     );
     
+    // Enqueue responsive CSS file for mobile and tablet
+    wp_enqueue_style(
+        'single-page-checkout-responsive-css',
+        get_stylesheet_directory_uri() . '/single-page-checkout-responsive.css',
+        array('single-page-checkout-css'),
+        '1.0.0' // Responsive design optimizations
+    );
+    
     // Enqueue jQuery if not already loaded
     wp_enqueue_script('jquery');
 }

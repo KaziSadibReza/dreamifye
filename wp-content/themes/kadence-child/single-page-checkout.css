@@ -2,6 +2,9 @@
  * Single Page Checkout Styles - Modern Design
  * Using custom color palette with card loaders and toast notifications
  * 
+ * NOTE: All responsive styles (mobile/tablet) are in a separate file:
+ * single-page-checkout-responsive.css
+ * 
  * @package KadenceChild
  * @version 2.0.0
  */
@@ -393,42 +396,6 @@
   50% {
     transform: translateX(100%) rotate(45deg);
   }
-}
-
-/* Responsive adjustments */
-@media (max-width: 480px) {
-  .spc-toast-container {
-    left: 16px;
-    right: 16px;
-    bottom: 16px;
-    max-width: none;
-  }
-
-  .spc-toast {
-    padding: var(--spc-space-sm);
-    gap: var(--spc-space-xs);
-    min-height: 48px;
-  }
-
-  .spc-toast-icon {
-    width: 20px;
-    height: 20px;
-    font-size: 10px;
-  }
-
-  .spc-toast-title {
-    font-size: 13px;
-  }
-
-  .spc-toast-message {
-    font-size: 12px;
-  }
-
-  .spc-toast-close {
-    width: 20px;
-    height: 20px;
-    font-size: 14px;
-  }
 } /* =============================================================================
    MODERN LAYOUT & CONTAINER
    ============================================================================= */
@@ -520,40 +487,13 @@
 .spc-checkout-section {
   margin-top: var(--spc-space-xl);
 }
+
 .spc-sidebar-cart .spc-card-body {
   padding: 0px 20px;
 }
+
 .spc-checkout-section .spc-card-body {
   max-height: none;
-}
-
-@media (max-width: 1024px) {
-  .spc-main-grid {
-    flex-direction: column;
-    gap: var(--spc-space-lg);
-  }
-
-  .spc-main-content {
-    max-width: 100%;
-  }
-
-  .spc-sidebar-cart {
-    display: none;
-  }
-
-  .spc-mobile-cart {
-    display: block;
-    order: 2;
-  }
-
-  .spc-products-section {
-    order: 1;
-  }
-
-  .spc-checkout-section {
-    order: 3;
-    margin-top: 0;
-  }
 }
 
 /* =============================================================================
@@ -998,137 +938,6 @@
   color: var(--spc-text-secondary);
 }
 
-/* Mobile Responsive */
-@media (max-width: 768px) {
-  .spc-products-grid {
-    flex-direction: column;
-    gap: var(--spc-space-md);
-  }
-
-  .spc-products-grid .spc-product-item,
-  .spc-slider-item {
-    min-width: auto;
-    max-width: none;
-  }
-
-  .spc-slider-container {
-    gap: var(--spc-space-sm);
-  }
-
-  .spc-slider-btn {
-    width: 40px;
-    height: 40px;
-  }
-
-  .spc-slider-icon {
-    width: 28px !important;
-    height: 28px !important;
-  }
-
-  .spc-layout-toggle {
-    gap: var(--spc-space-xs);
-    margin-bottom: var(--spc-space-md);
-  }
-
-  .spc-view-btn {
-    padding: var(--spc-space-xs) var(--spc-space-md);
-    font-size: 0.9rem;
-  }
-
-  .spc-card-loader-grid {
-    flex-direction: column;
-  }
-
-  .spc-card-loader-item {
-    min-width: auto;
-    max-width: none;
-  }
-
-  .spc-card-loader-slides {
-    gap: var(--spc-space-md);
-  }
-
-  .spc-card-loader-slide {
-    flex: 0 0 250px;
-  }
-
-  .spc-card-loader-image {
-    height: 250px;
-  }
-
-  .spc-product-image-container {
-    height: 250px;
-  }
-
-  .spc-zoom-close {
-    top: -18px;
-    right: -18px;
-    width: 44px;
-    height: 44px;
-  }
-
-  .spc-zoom-close svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  .spc-zoom-content {
-    max-width: 95vw;
-    max-height: 85vh;
-  }
-}
-
-@media (max-width: 480px) {
-  .spc-layout-toggle {
-    flex-direction: column;
-    gap: var(--spc-space-xs);
-  }
-
-  .spc-view-btn {
-    justify-content: center;
-  }
-
-  .spc-slider-track {
-    gap: var(--spc-space-md);
-  }
-
-  .spc-slider-item {
-    flex: 0 0 220px;
-  }
-
-  .spc-product-image-container {
-    height: 220px;
-  }
-
-  .spc-product-overlay {
-    padding: var(--spc-space-md);
-  }
-
-  .spc-zoom-btn {
-    width: 44px;
-    height: 44px;
-  }
-
-  .spc-zoom-btn svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  .spc-product-overlay .spc-product-price {
-    font-size: 1rem;
-  }
-
-  .spc-slider-btn {
-    width: 40px;
-    height: 40px;
-  }
-
-  .spc-slider-icon {
-    width: 24px !important;
-    height: 24px !important;
-  }
-}
-
 /* =============================================================================
    CART SECTION - MODERN DESIGN
    ============================================================================= */
@@ -1549,46 +1358,6 @@
 }
 
 /* =============================================================================
-   RESPONSIVE DESIGN
-   ============================================================================= */
-
-@media (max-width: 768px) {
-  .spc-container {
-    padding: var(--spc-space-md);
-  }
-
-  .spc-main-grid {
-    gap: var(--spc-space-md);
-  }
-
-  .spc-sidebar-cart {
-    position: static;
-    max-height: none;
-    overflow-y: visible;
-  }
-
-  .spc-section-title {
-    font-size: 1.8rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .spc-container {
-    padding: var(--spc-space-sm);
-  }
-
-  .spc-card-header,
-  .spc-card-body,
-  .spc-card-footer {
-    padding: var(--spc-space-md);
-  }
-
-  .spc-product-content {
-    padding: var(--spc-space-sm);
-  }
-}
-
-/* =============================================================================
    MESSAGES
    ============================================================================= */
 
@@ -1994,47 +1763,6 @@
   left: 0;
   color: var(--spc-success-color);
   font-weight: bold;
-}
-
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
-  .spc-order-details-grid {
-    flex-direction: column;
-  }
-
-  .spc-order-card {
-    min-width: auto;
-  }
-
-  .spc-success-title {
-    font-size: 2rem;
-  }
-
-  .spc-success-subtitle {
-    font-size: 1rem;
-  }
-
-  .spc-order-actions {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .spc-btn {
-    width: 100%;
-    max-width: 250px;
-  }
-
-  .spc-info-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 5px;
-  }
-
-  .spc-item-meta {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 5px;
-  }
 }
 
 /* =============================================================================
@@ -2816,33 +2544,6 @@
   z-index: 1000;
 }
 
-/* Responsive Checkout Form */
-@media (max-width: 768px) {
-  .spc-checkout-section .col2-set {
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  .spc-checkout-section .woocommerce-billing-fields,
-  .spc-checkout-section .woocommerce-shipping-fields {
-    padding: 15px;
-  }
-
-  .spc-checkout-section .form-row input[type="text"],
-  .spc-checkout-section .form-row input[type="email"],
-  .spc-checkout-section .form-row input[type="tel"],
-  .spc-checkout-section .form-row textarea,
-  .spc-checkout-section .form-row select {
-    padding: 10px 12px;
-    font-size: 16px; /* Prevents zoom on iOS */
-  }
-
-  .spc-checkout-section #place_order {
-    padding: 12px 20px;
-    font-size: 1rem;
-  }
-}
-
 /* =============================================================================
    UTILITY CLASSES
    ============================================================================= */
@@ -2893,163 +2594,6 @@
 /* =============================================================================
    RESPONSIVE DESIGN
    ============================================================================= */
-
-@media (max-width: 1024px) {
-  .spc-container {
-    padding: 15px;
-  }
-
-  .spc-main-grid {
-    flex-direction: column;
-    gap: 30px;
-  }
-
-  .spc-sidebar-cart {
-    flex: none;
-    position: static;
-    max-height: none;
-    overflow-y: visible;
-    order: 2;
-  }
-
-  .spc-main-content {
-    flex: none;
-    order: 1;
-  }
-
-  /* Show mobile cart section on tablet */
-  .spc-mobile-cart {
-    display: block;
-  }
-
-  /* Hide desktop sidebar cart on tablet */
-  .spc-sidebar-cart {
-    display: none;
-  }
-}
-
-@media (max-width: 768px) {
-  .spc-main-grid {
-    flex-direction: column;
-    gap: 20px;
-    padding: 10px;
-  }
-
-  .spc-sidebar-cart {
-    display: none;
-  }
-
-  .spc-mobile-cart {
-    display: block;
-    order: 2;
-  }
-
-  .spc-main-content {
-    order: 1;
-  }
-
-  .spc-checkout-section {
-    order: 3;
-  }
-
-  .spc-checkout-section .col2-set {
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  /* Responsive Cart Items for Tablet */
-  .spc-cart-item {
-    padding: var(--spc-space-sm);
-    gap: var(--spc-space-sm);
-  }
-
-  .spc-cart-item-image {
-    width: 50px;
-    height: 50px;
-  }
-
-  .spc-cart-item-title {
-    font-size: 0.85rem;
-  }
-
-  .spc-quantity-btn {
-    width: 24px;
-    height: 24px;
-    font-size: 14px;
-  }
-
-  .spc-quantity-number {
-    min-width: 28px;
-    font-size: 0.85rem;
-  }
-
-  .spc-section-title {
-    font-size: 20px;
-  }
-
-  .spc-cart-section,
-  .spc-checkout-section {
-    padding: 15px;
-  }
-}
-
-@media (max-width: 480px) {
-  .spc-container {
-    padding: 10px;
-  }
-
-  .spc-products-grid {
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  .spc-cart-checkout-section {
-    gap: 15px;
-  }
-
-  /* Mobile Cart Items - Compact Layout */
-  .spc-cart-item {
-    padding: var(--spc-space-sm);
-    gap: var(--spc-space-sm);
-  }
-
-  .spc-cart-item-image {
-    width: 50px;
-    height: 50px;
-  }
-
-  .spc-cart-item-content {
-    align-items: stretch;
-  }
-
-  .spc-cart-item-header {
-    margin-bottom: var(--spc-space-xs);
-  }
-
-  .spc-cart-item-title {
-    font-size: 0.9rem;
-  }
-
-  .spc-quantity-btn {
-    width: 28px;
-    height: 28px;
-  }
-
-  .spc-quantity-number {
-    min-width: 32px;
-  }
-
-  .spc-remove-btn {
-    width: 20px;
-    height: 20px;
-    font-size: 14px;
-  }
-
-  .spc-cart-section,
-  .spc-checkout-section {
-    padding: 15px;
-  }
-}
 
 /* =============================================================================
    WOOCOMMERCE CHECKOUT FORM STYLING - FORCE OVERRIDE WITH !IMPORTANT
@@ -3193,22 +2737,6 @@
   margin-bottom: 4px;
   color: var(--spc-text-secondary);
   font-size: 0.85rem;
-}
-
-/* Responsive adjustments for order table */
-@media (max-width: 768px) {
-  .spc-order-table {
-    font-size: 0.85rem;
-  }
-
-  .spc-order-table th,
-  .spc-order-table td {
-    padding: var(--spc-space-xs) var(--spc-space-sm);
-  }
-
-  .spc-order-title {
-    font-size: 1rem;
-  }
 }
 
 /* =============================================================================
