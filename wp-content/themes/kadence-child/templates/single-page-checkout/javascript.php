@@ -361,7 +361,7 @@ if (!defined('ABSPATH')) {
             e.stopPropagation();
 
             const $button = $(this);
-            const action = $button.hasClass('spc-increase-qty') ? 'increase' : 'decrease';
+            const action = $button.hasClass('spc-quantity-increase') ? 'increase' : 'decrease';
             const cartItemKey = $button.data('cart-item-key');
             const $cartItem = $button.closest('.spc-cart-item');
             const productTitle = $cartItem.find('.spc-cart-item-title').text();
@@ -742,38 +742,6 @@ if (!defined('ABSPATH')) {
     .spc-products-grid[data-category].active {
         grid-template-columns: 1fr;
         gap: 1rem;
-    }
-}
-
-.spc-loading {
-    position: relative;
-    pointer-events: none;
-    opacity: 0.7;
-}
-
-.spc-loading::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--spc-pink);
-    border-top: 2px solid transparent;
-    border-radius: 50%;
-    animation: spc-spin 1s linear infinite;
-    transform: translate(-50%, -50%);
-    z-index: 10;
-    background: rgba(255, 255, 255, 0.9);
-}
-
-@keyframes spc-spin {
-    0% {
-        transform: translate(-50%, -50%) rotate(0deg);
-    }
-
-    100% {
-        transform: translate(-50%, -50%) rotate(360deg);
     }
 }
 

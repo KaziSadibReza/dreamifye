@@ -30,33 +30,56 @@ if (WC()->cart->is_empty()) {
     
     if (!$product) continue;
     
-    $product_image = wp_get_attachment_image_src(get_post_thumbnail_id($product_id), 'thumbnail');
-    $product_image_url = $product_image ? $product_image[0] : wc_placeholder_img_src('thumbnail');
+    $product_image = wp_get_attachment_image_src(get_post_thumbnail_id($product_id), 'medium');
+    $product_image_url = $product_image ? $product_image[0] : wc_placeholder_img_src('medium');
+    $product_permalink = get_permalink($product_id);
     ?>
 <div class="spc-cart-item" data-product-id="<?php echo esc_attr($product_id); ?>">
-    <img src="<?php echo esc_url($product_image_url); ?>" alt="<?php echo esc_attr($product->get_name()); ?>"
-        class="spc-cart-item-image" loading="lazy">
-
-    <div class="spc-cart-item-details">
-        <div class="spc-cart-item-title"><?php echo esc_html($product->get_name()); ?></div>
-        <div class="spc-cart-item-price"><?php echo $product->get_price_html(); ?></div>
+    <div class="spc-cart-item-image-wrapper">
+        <img src="<?php echo esc_url($product_image_url); ?>" 
+             alt="<?php echo esc_attr($product->get_name()); ?>"
+             class="spc-cart-item-image" 
+             loading="lazy">
     </div>
 
-    <div class="spc-quantity-controls">
-        <button class="spc-quantity-btn spc-decrease-qty" data-cart-item-key="<?php echo esc_attr($cart_item_key); ?>"
-            <?php echo ($quantity <= 1) ? 'disabled' : ''; ?> title="Decrease quantity">
-            −
-        </button>
-        <span class="spc-quantity-display"><?php echo esc_html($quantity); ?></span>
-        <button class="spc-quantity-btn spc-increase-qty" data-cart-item-key="<?php echo esc_attr($cart_item_key); ?>"
-            title="Increase quantity">
-            +
-        </button>
-    </div>
+    <div class="spc-cart-item-content">
+        <div class="spc-cart-item-header">
+            <h4 class="spc-cart-item-title" title="<?php echo esc_attr($product->get_name()); ?>">
+                <?php echo esc_html($product->get_name()); ?>
+            </h4>
+            <button class="spc-remove-btn" 
+                    data-cart-item-key="<?php echo esc_attr($cart_item_key); ?>"
+                    data-product-id="<?php echo esc_attr($product_id); ?>" 
+                    title="Remove <?php echo esc_attr($product->get_name()); ?> from cart"
+                    aria-label="Remove item">
+                ×
+            </button>
+        </div>
 
-    <button class="spc-remove-btn" data-cart-item-key="<?php echo esc_attr($cart_item_key); ?>"
-        data-product-id="<?php echo esc_attr($product_id); ?>" title="Remove from cart">
-        ×
-    </button>
+        <div class="spc-cart-item-price">
+            <?php echo $product->get_price_html(); ?>
+        </div>
+
+        <div class="spc-cart-item-footer">
+            <div class="spc-quantity-controls">
+                <button class="spc-quantity-btn spc-quantity-decrease" 
+                        data-cart-item-key="<?php echo esc_attr($cart_item_key); ?>"
+                        <?php echo ($quantity <= 1) ? 'disabled' : ''; ?> 
+                        title="Decrease quantity"
+                        aria-label="Decrease quantity">
+                    −
+                </button>
+                
+                <span class="spc-quantity-number"><?php echo esc_html($quantity); ?></span>
+                
+                <button class="spc-quantity-btn spc-quantity-increase" 
+                        data-cart-item-key="<?php echo esc_attr($cart_item_key); ?>"
+                        title="Increase quantity"
+                        aria-label="Increase quantity">
+                    +
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 <?php endforeach; ?>
