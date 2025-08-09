@@ -436,36 +436,57 @@ if (!defined('ABSPATH')) {
             $('.spc-view-btn').removeClass('active');
             $btn.addClass('active');
 
-            // Show/hide layouts
-            if (layout === 'grid') {
-                $('.spc-products-grid').show().addClass('active');
-                $('.spc-products-slider').hide().removeClass('active');
+            // Show loader and hide products during transition
+            $('#spc-products-grid').fadeOut(150, function() {
+                $('#spc-products-loading').fadeIn(150);
 
-                // Update card loader for grid
-                $('.spc-card-loader-grid').show();
-                $('.spc-card-loader-slider').hide();
-
-                // Destroy swiper if exists
-                if (SPC.swiper) {
-                    SPC.swiper.destroy(true, true);
-                    SPC.swiper = null;
+                // Show appropriate card loader based on target layout
+                if (layout === 'grid') {
+                    $('.spc-card-loader-slider').hide();
+                    $('.spc-card-loader-grid').show();
+                } else {
+                    $('.spc-card-loader-grid').hide();
+                    $('.spc-card-loader-slider').show();
                 }
-            } else {
-                $('.spc-products-grid').hide().removeClass('active');
-                $('.spc-products-slider').show().addClass('active');
 
-                // Update card loader for slider  
-                $('.spc-card-loader-grid').hide();
-                $('.spc-card-loader-slider').show();
+                // Simulate loading time and then switch layouts
+                setTimeout(() => {
+                    // Show/hide layouts
+                    if (layout === 'grid') {
+                        $('.spc-products-grid').show().addClass('active');
+                        $('.spc-products-slider').hide().removeClass('active');
 
-                // Initialize swiper for slider layout
-                setTimeout(() => SPC.initSwiper(), 100);
-            }
+                        // Destroy swiper if exists
+                        if (SPC.swiper) {
+                            SPC.swiper.destroy(true, true);
+                            SPC.swiper = null;
+                        }
+                    } else {
+                        $('.spc-products-grid').hide().removeClass('active');
+                        $('.spc-products-slider').show().addClass('active');
 
-            // Sync selection states between layouts
-            SPC.syncProductSelectionStates();
+                        // Initialize swiper for slider layout
+                        setTimeout(() => SPC.initSwiper(), 100);
+                    }
 
-            SPC.showToast('Layout switched to ' + layout + ' view', 'success', 'View Changed');
+                    // Hide loader and show products
+                    $('#spc-products-loading').fadeOut(150, function() {
+                        $('#spc-products-grid').fadeIn(150, function() {
+                            // Initialize swiper for slider layout AFTER the fadeIn is complete
+                            if (layout === 'slider') {
+                                // Add extra delay to ensure DOM is fully rendered
+                                setTimeout(() => SPC.initSwiper(), 300);
+                            }
+                            
+                            // Sync selection states between layouts
+                            SPC.syncProductSelectionStates();
+
+                            SPC.showToast('Layout switched to ' + layout + ' view',
+                                'success', 'View Changed');
+                        });
+                    });
+                }, 600); // Loading simulation time
+            });
         },
 
         // Initialize Swiper.js
@@ -474,7 +495,7 @@ if (!defined('ABSPATH')) {
             if ($('.spc-products-slider').is(':visible') && !SPC.swiper) {
                 SPC.swiper = new Swiper('.spc-slider-track', {
                     slidesPerView: 1,
-                    spaceBetween: 20,
+                    spaceBetween: 0,
                     freeMode: true,
                     grabCursor: true,
                     navigation: {
