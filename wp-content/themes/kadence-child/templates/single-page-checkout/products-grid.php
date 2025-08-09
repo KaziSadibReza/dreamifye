@@ -101,130 +101,158 @@ if ($products->have_posts()):
     
     // Display products grouped by category
     foreach ($products_by_category as $category_slug => $category_data): ?>
-        
-        <div class="spc-category-section" data-category="<?php echo esc_attr($category_slug); ?>">
-            <!-- Category Header -->
-            <div class="spc-category-header">
-                <h2 class="spc-category-title"><?php echo esc_html($category_data['name']); ?></h2>
-                <div class="spc-category-controls">
-                    <div class="spc-view-toggle" data-category="<?php echo esc_attr($category_slug); ?>">
-                        <button class="spc-view-btn" data-view="grid" data-category="<?php echo esc_attr($category_slug); ?>">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M3 3h8v8H3zM13 3h8v8h-8zM3 13h8v8H3zM13 13h8v8h-8z"/>
-                            </svg>
-                            Grid
-                        </button>
-                        <button class="spc-view-btn active" data-view="slider" data-category="<?php echo esc_attr($category_slug); ?>">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M4 6h16v2H4zM4 11h16v2H4zM4 16h16v2H4z"/>
-                            </svg>
-                            Slider
-                        </button>
-                    </div>
+
+<div class="spc-category-section" data-category="<?php echo esc_attr($category_slug); ?>">
+    <!-- Category Header -->
+    <div class="spc-category-header">
+        <h2 class="spc-category-title"><?php echo esc_html($category_data['name']); ?></h2>
+        <div class="spc-category-controls">
+            <div class="spc-view-toggle" data-category="<?php echo esc_attr($category_slug); ?>">
+                <button class="spc-view-btn" data-view="grid" data-category="<?php echo esc_attr($category_slug); ?>">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3 3h8v8H3zM13 3h8v8h-8zM3 13h8v8H3zM13 13h8v8h-8z" />
+                    </svg>
+                    Grid
+                </button>
+                <button class="spc-view-btn active" data-view="slider"
+                    data-category="<?php echo esc_attr($category_slug); ?>">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M4 6h16v2H4zM4 11h16v2H4zM4 16h16v2H4z" />
+                    </svg>
+                    Slider
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category-specific Card Loaders -->
+    <div class="spc-category-loading" data-category="<?php echo esc_attr($category_slug); ?>" style="display: none;">
+        <!-- Card Loaders for Grid -->
+        <div class="spc-card-loader-grid" style="display: none;">
+            <?php for ($i = 0; $i < 6; $i++): ?>
+            <div class="spc-card-loader spc-card-loader-item">
+                <div class="spc-card-loader-image">
+                    <div class="spc-card-loader-shimmer"></div>
+                </div>
+                <div class="spc-card-loader-overlay">
+                    <div class="spc-card-loader-price"></div>
+                    <div class="spc-card-loader-btn"></div>
                 </div>
             </div>
-
-            <!-- Category-specific Card Loaders -->
-            <div class="spc-category-loading" data-category="<?php echo esc_attr($category_slug); ?>" style="display: none;">
-                <!-- Card Loaders for Grid -->
-                <div class="spc-card-loader-grid" style="display: none;">
-                    <?php for ($i = 0; $i < 6; $i++): ?>
-                    <div class="spc-card-loader spc-card-loader-item">
-                        <div class="spc-card-loader-image">
-                            <div class="spc-card-loader-shimmer"></div>
-                        </div>
-                        <div class="spc-card-loader-overlay">
-                            <div class="spc-card-loader-price"></div>
-                            <div class="spc-card-loader-btn"></div>
-                        </div>
+            <?php endfor; ?>
+        </div>
+        <!-- Card Loaders for Slider -->
+        <div class="spc-card-loader-slider">
+            <div class="spc-card-loader-slides">
+                <?php for ($i = 0; $i < 3; $i++): ?>
+                <div class="spc-card-loader spc-card-loader-slide">
+                    <div class="spc-card-loader-image">
+                        <div class="spc-card-loader-shimmer"></div>
                     </div>
-                    <?php endfor; ?>
-                </div>
-                <!-- Card Loaders for Slider -->
-                <div class="spc-card-loader-slider">
-                    <div class="spc-card-loader-slides">
-                        <?php for ($i = 0; $i < 3; $i++): ?>
-                        <div class="spc-card-loader spc-card-loader-slide">
-                            <div class="spc-card-loader-image">
-                                <div class="spc-card-loader-shimmer"></div>
-                            </div>
-                            <div class="spc-card-loader-overlay">
-                                <div class="spc-card-loader-price"></div>
-                                <div class="spc-card-loader-btn"></div>
-                            </div>
-                        </div>
-                        <?php endfor; ?>
+                    <div class="spc-card-loader-overlay">
+                        <div class="spc-card-loader-price"></div>
+                        <div class="spc-card-loader-btn"></div>
                     </div>
                 </div>
+                <?php endfor; ?>
             </div>
+        </div>
+    </div>
 
-            <!-- Grid Layout for this category -->
-            <div class="spc-products-grid" data-layout="grid" data-category="<?php echo esc_attr($category_slug); ?>" style="display: none;">
-                <?php foreach ($category_data['products'] as $product_data): ?>
-                    <div class="spc-product-item <?php echo $product_data['in_cart'] ? 'selected' : ''; ?>"
-                        data-product-id="<?php echo esc_attr($product_data['id']); ?>">
-                        <div class="spc-product-image-container">
-                            <img src="<?php echo esc_url($product_data['image_url']); ?>" 
-                                alt="<?php echo esc_attr($product_data['title']); ?>"
-                                class="spc-product-image" loading="lazy">
-                            <div class="spc-product-overlay">
-                                <div class="spc-product-price"><?php echo $product_data['price']; ?></div>
-                                <button class="spc-zoom-btn" data-full-image="<?php echo esc_url($product_data['full_image_url']); ?>">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
-                                        <path d="M12 10h-2v2H9v-2H7V9h2V7h1v2h2v1z" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
+    <!-- Grid Layout for this category -->
+    <div class="spc-products-grid" data-layout="grid" data-category="<?php echo esc_attr($category_slug); ?>"
+        style="display: none;">
+        <?php foreach ($category_data['products'] as $product_data): ?>
+        <div class="spc-product-item <?php echo $product_data['in_cart'] ? 'selected' : ''; ?>"
+            data-product-id="<?php echo esc_attr($product_data['id']); ?>">
+            <div class="spc-product-image-container">
+                <img src="<?php echo esc_url($product_data['image_url']); ?>"
+                    alt="<?php echo esc_attr($product_data['title']); ?>" class="spc-product-image" loading="lazy">
+                <div class="spc-product-overlay">
+                    <div class="spc-product-price"><?php echo $product_data['price']; ?></div>
+                    <button class="spc-zoom-btn"
+                        data-full-image="<?php echo esc_url($product_data['full_image_url']); ?>">
+                        <svg viewBox="0 -0.5 21 21" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink">
 
-            <!-- Slider Layout for this category -->
-            <div class="spc-products-slider active" data-layout="slider" data-category="<?php echo esc_attr($category_slug); ?>">
-                <div class="spc-slider-container">
-                    <button class="spc-slider-btn spc-slider-prev" data-category="<?php echo esc_attr($category_slug); ?>">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
-                        </svg>
-                    </button>
-                    <div class="spc-slider-track swiper" data-category="<?php echo esc_attr($category_slug); ?>">
-                        <div class="swiper-wrapper">
-                            <?php foreach ($category_data['products'] as $product_data): ?>
-                                <div class="swiper-slide">
-                                    <div class="spc-slider-item spc-product-item <?php echo $product_data['in_cart'] ? 'selected' : ''; ?>"
-                                        data-product-id="<?php echo esc_attr($product_data['id']); ?>">
-                                        <div class="spc-product-image-container">
-                                            <img src="<?php echo esc_url($product_data['image_url']); ?>"
-                                                alt="<?php echo esc_attr($product_data['title']); ?>" 
-                                                class="spc-product-image" loading="lazy">
-                                            <div class="spc-product-overlay">
-                                                <div class="spc-product-price"><?php echo $product_data['price']; ?></div>
-                                                <button class="spc-zoom-btn"
-                                                    data-full-image="<?php echo esc_url($product_data['full_image_url']); ?>">
-                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                                        <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
-                                                        <path d="M12 10h-2v2H9v-2H7V9h2V7h1v2h2v1z" />
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
-                    <button class="spc-slider-btn spc-slider-next" data-category="<?php echo esc_attr($category_slug); ?>">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+
+                            <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <g id="Dribbble-Light-Preview" transform="translate(-379.000000, -440.000000)"
+                                    fill="#000000">
+                                    <g id="icons" transform="translate(56.000000, 160.000000)">
+                                        <path
+                                            d="M332.449994,286.967331 L334.549993,286.967331 C335.129593,286.967331 335.599993,287.416448 335.599993,287.969825 C335.599993,288.523201 335.129593,288.972319 334.549993,288.972319 L332.449994,288.972319 L332.449994,290.977306 C332.449994,291.530683 331.979595,291.9798 331.399995,291.9798 C330.820395,291.9798 330.349996,291.530683 330.349996,290.977306 L330.349996,288.972319 L328.249997,288.972319 C327.670397,288.972319 327.199998,288.523201 327.199998,287.969825 C327.199998,287.416448 327.670397,286.967331 328.249997,286.967331 L330.349996,286.967331 L330.349996,284.962344 C330.349996,284.408967 330.820395,283.95985 331.399995,283.95985 C331.979595,283.95985 332.449994,284.408967 332.449994,284.962344 L332.449994,286.967331 Z M343.692338,299.706019 L343.692338,299.706019 C343.282838,300.097994 342.617138,300.097994 342.207639,299.706019 L338.060141,295.746169 L339.54484,294.328642 L343.692338,298.288493 C344.102887,298.679465 344.102887,299.315046 343.692338,299.706019 L343.692338,299.706019 Z M331.399995,294.034912 C327.926597,294.034912 325.099999,291.337201 325.099999,288.01995 C325.099999,284.7037 327.926597,282.004987 331.399995,282.004987 C334.873393,282.004987 337.699991,284.7037 337.699991,288.01995 C337.699991,291.337201 334.873393,294.034912 331.399995,294.034912 L331.399995,294.034912 Z M331.399995,280 C326.761098,280 323,283.590932 323,288.01995 C323,292.449969 326.761098,296.039899 331.399995,296.039899 C336.038892,296.039899 339.79999,292.449969 339.79999,288.01995 C339.79999,283.590932 336.038892,280 331.399995,280 L331.399995,280 Z"
+                                            id="zoom_in-[#1462]">
+
+                                        </path>
+                                    </g>
+                                </g>
+                            </g>
                         </svg>
                     </button>
                 </div>
             </div>
         </div>
-        
-    <?php endforeach; ?>
+        <?php endforeach; ?>
+    </div>
+
+    <!-- Slider Layout for this category -->
+    <div class="spc-products-slider active" data-layout="slider"
+        data-category="<?php echo esc_attr($category_slug); ?>">
+        <div class="spc-slider-container">
+            <button class="spc-slider-btn spc-slider-prev" data-category="<?php echo esc_attr($category_slug); ?>">
+                <svg class="spc-slider-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+                </svg>
+            </button>
+            <div class="spc-slider-track swiper" data-category="<?php echo esc_attr($category_slug); ?>">
+                <div class="swiper-wrapper">
+                    <?php foreach ($category_data['products'] as $product_data): ?>
+                    <div class="swiper-slide">
+                        <div class="spc-slider-item spc-product-item <?php echo $product_data['in_cart'] ? 'selected' : ''; ?>"
+                            data-product-id="<?php echo esc_attr($product_data['id']); ?>">
+                            <div class="spc-product-image-container">
+                                <img src="<?php echo esc_url($product_data['image_url']); ?>"
+                                    alt="<?php echo esc_attr($product_data['title']); ?>" class="spc-product-image"
+                                    loading="lazy">
+                                <div class="spc-product-overlay">
+                                    <div class="spc-product-price"><?php echo $product_data['price']; ?></div>
+                                    <button class="spc-zoom-btn"
+                                        data-full-image="<?php echo esc_url($product_data['full_image_url']); ?>">
+                                        <svg viewBox="0 -0.5 21 21" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink">
+                                            <g id="Page-1" stroke="none" stroke-width="1" fill="none"
+                                                fill-rule="evenodd">
+                                                <g id="Dribbble-Light-Preview"
+                                                    transform="translate(-379.000000, -440.000000)" fill="#000000">
+                                                    <g id="icons" transform="translate(56.000000, 160.000000)">
+                                                        <path
+                                                            d="M332.449994,286.967331 L334.549993,286.967331 C335.129593,286.967331 335.599993,287.416448 335.599993,287.969825 C335.599993,288.523201 335.129593,288.972319 334.549993,288.972319 L332.449994,288.972319 L332.449994,290.977306 C332.449994,291.530683 331.979595,291.9798 331.399995,291.9798 C330.820395,291.9798 330.349996,291.530683 330.349996,290.977306 L330.349996,288.972319 L328.249997,288.972319 C327.670397,288.972319 327.199998,288.523201 327.199998,287.969825 C327.199998,287.416448 327.670397,286.967331 328.249997,286.967331 L330.349996,286.967331 L330.349996,284.962344 C330.349996,284.408967 330.820395,283.95985 331.399995,283.95985 C331.979595,283.95985 332.449994,284.408967 332.449994,284.962344 L332.449994,286.967331 Z M343.692338,299.706019 L343.692338,299.706019 C343.282838,300.097994 342.617138,300.097994 342.207639,299.706019 L338.060141,295.746169 L339.54484,294.328642 L343.692338,298.288493 C344.102887,298.679465 344.102887,299.315046 343.692338,299.706019 L343.692338,299.706019 Z M331.399995,294.034912 C327.926597,294.034912 325.099999,291.337201 325.099999,288.01995 C325.099999,284.7037 327.926597,282.004987 331.399995,282.004987 C334.873393,282.004987 337.699991,284.7037 337.699991,288.01995 C337.699991,291.337201 334.873393,294.034912 331.399995,294.034912 L331.399995,294.034912 Z M331.399995,280 C326.761098,280 323,283.590932 323,288.01995 C323,292.449969 326.761098,296.039899 331.399995,296.039899 C336.038892,296.039899 339.79999,292.449969 339.79999,288.01995 C339.79999,283.590932 336.038892,280 331.399995,280 L331.399995,280 Z"
+                                                            id="zoom_in-[#1462]">
+
+                                                        </path>
+                                                    </g>
+                                                </g>
+                                            </g>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            <button class="spc-slider-btn spc-slider-next" data-category="<?php echo esc_attr($category_slug); ?>">
+                <svg class="spc-slider-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+<?php endforeach; ?>
 
 <!-- Image Zoom Modal -->
 <div id="spc-zoom-modal" class="spc-zoom-modal">
