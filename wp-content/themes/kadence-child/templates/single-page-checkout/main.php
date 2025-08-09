@@ -123,11 +123,6 @@ if (!defined('ABSPATH')) {
             <div id="spc-checkout-section" class="spc-checkout-section"
                 style="display: <?php echo (WC()->cart && !WC()->cart->is_empty()) ? 'block' : 'none'; ?>;">
                 <div class="spc-card">
-                    <div class="spc-card-header">
-                        <h3 class="spc-card-title">
-                            <span>📋</span> Checkout Details
-                        </h3>
-                    </div>
                     <div class="spc-card-body">
                         <div id="spc-checkout-content">
                             <?php echo SinglePageCheckout::get_checkout_content(); ?>
