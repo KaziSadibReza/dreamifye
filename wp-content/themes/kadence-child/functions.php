@@ -31,7 +31,7 @@ function kadence_child_enqueue_styles() {
         'single-page-checkout-css',
         get_stylesheet_directory_uri() . '/single-page-checkout.css',
         array(),
-        '3.3.0' // Updated for enhanced checkout form design
+        '3.3.1' // Updated for enhanced checkout form design
     );
     
     // Enqueue jQuery if not already loaded
