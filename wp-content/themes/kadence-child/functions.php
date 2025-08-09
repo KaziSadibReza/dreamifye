@@ -31,7 +31,7 @@ function kadence_child_enqueue_styles() {
         'single-page-checkout-css',
         get_stylesheet_directory_uri() . '/single-page-checkout.css',
         array(),
-        '3.3.5' // Updated for enhanced checkout form design
+        '3.3.6' // Updated for enhanced checkout form design
     );
     
     // Enqueue responsive CSS file for mobile and tablet
@@ -39,11 +39,17 @@ function kadence_child_enqueue_styles() {
         'single-page-checkout-responsive-css',
         get_stylesheet_directory_uri() . '/single-page-checkout-responsive.css',
         array('single-page-checkout-css'),
-        '1.0.2' // Responsive design optimizations
+        '1.0.3' // Responsive design optimizations
     );
     
     // Enqueue jQuery if not already loaded
     wp_enqueue_script('jquery');
+    
+    // Let WooCommerce handle its own scripts on the checkout page.
+    // The [woocommerce_checkout] shortcode will trigger the necessary script enqueues.
+    if (is_page() && has_shortcode(get_post()->post_content, 'single_page_checkout')) {
+        wp_enqueue_script('wc-checkout');
+    }
 }
 add_action('wp_enqueue_scripts', 'kadence_child_enqueue_styles');
 
@@ -389,9 +395,11 @@ class SinglePageCheckout {
         $cart_item_key = WC()->cart->add_to_cart($product_id, 1);
         
         if ($cart_item_key) {
+            // Calculate totals to ensure the session is updated
+            WC()->cart->calculate_totals();
+            
             wp_send_json_success(array(
                 'cart_html' => self::get_cart_content(),
-                'checkout_html' => self::get_checkout_content(),
                 'order_review_html' => self::get_order_review()
             ));
         } else {
@@ -422,9 +430,11 @@ class SinglePageCheckout {
         
         WC()->cart->remove_cart_item($cart_item_key);
         
+        // Calculate totals to ensure the session is updated
+        WC()->cart->calculate_totals();
+        
         wp_send_json_success(array(
             'cart_html' => self::get_cart_content(),
-            'checkout_html' => self::get_checkout_content(),
             'order_review_html' => self::get_order_review()
         ));
     }
@@ -469,9 +479,11 @@ class SinglePageCheckout {
         
         WC()->cart->set_quantity($cart_item_key, $new_quantity);
         
+        // Calculate totals to ensure the session is updated
+        WC()->cart->calculate_totals();
+        
         wp_send_json_success(array(
             'cart_html' => self::get_cart_content(),
-            'checkout_html' => self::get_checkout_content(),
             'order_review_html' => self::get_order_review()
         ));
     }
@@ -532,7 +544,6 @@ class SinglePageCheckout {
         
         wp_send_json_success(array(
             'cart_html' => self::get_cart_content(),
-            'checkout_html' => self::get_checkout_content(),
             'order_review_html' => self::get_order_review(),
             'total_amount' => $total_amount
         ));

@@ -94,7 +94,7 @@
   }
 }
 
-#billing_country_field {
+.billing_country_field {
   display: none;
 }
 

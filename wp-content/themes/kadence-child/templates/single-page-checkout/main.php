@@ -38,7 +38,7 @@ if (!defined('ABSPATH')) {
 
             </g>
 
-        </svg> Select Your Products
+        </svg> আপনার পন্য গুলো পছন্দ করুন
     </h1>
 
     <div class="spc-main-grid">
