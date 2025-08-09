@@ -94,6 +94,10 @@
   }
 }
 
+.billing_country_field {
+  display: none;
+}
+
 /* Card Loader Base */
 .spc-card-loader {
   background: var(--spc-bg-card);
