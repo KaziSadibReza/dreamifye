@@ -71,7 +71,7 @@ class SinglePageCheckout {
      * Default shortcode attributes
      */
     const DEFAULT_ATTRIBUTES = array(
-        'products_per_page' => 12,
+        'products_per_page' => 50, // Increased to show more products across categories
         'category' => '',
         'columns' => 3
     );
@@ -183,10 +183,13 @@ class SinglePageCheckout {
                     'key' => '_stock_status',
                     'value' => 'instock'
                 )
-            )
+            ),
+            'orderby' => 'menu_order',
+            'order' => 'ASC'
         );
         
-        if (!empty($atts['category'])) {
+        // Only apply category filter if specifically requested
+        if (!empty($atts['category']) && $atts['category'] !== 'all') {
             $args['tax_query'] = array(
                 array(
                     'taxonomy' => 'product_cat',

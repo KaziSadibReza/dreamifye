@@ -61,20 +61,6 @@ if (!defined('ABSPATH')) {
 
                 <!-- Actual Products Grid/Slider -->
                 <div id="spc-products-grid" class="spc-products-container" style="display: none;">
-                    <div class="spc-layout-toggle">
-                        <button id="spc-slider-view" class="spc-view-btn active" data-view="slider">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M2 6h20v3H2V6zm0 5h20v3H2v-3zm0 5h20v3H2v-3z" />
-                            </svg>
-                            Slider
-                        </button>
-                        <button id="spc-grid-view" class="spc-view-btn" data-view="grid">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M3 3h7v7H3V3zm0 11h7v7H3v-7zm11-11h7v7h-7V3zm0 11h7v7h-7v-7z" />
-                            </svg>
-                            Grid
-                        </button>
-                    </div>
                     <?php echo SinglePageCheckout::load_template('products-grid', compact('atts')); ?>
                 </div>
             </div>

@@ -22,7 +22,7 @@ if (!defined('ABSPATH')) {
 
     const SPC = {
         toastContainer: null,
-        swiper: null,
+        swipers: {}, // Store multiple swiper instances for different categories
 
         init: function() {
             this.toastContainer = document.getElementById('spc-toast-container');
@@ -30,7 +30,7 @@ if (!defined('ABSPATH')) {
             this.loadProducts();
             this.initializeCart();
 
-            console.log('SPC Modern JavaScript v2.0.1 Loaded with Swiper.js');
+            console.log('SPC Modern JavaScript v3.1.0 Loaded with Category Support');
         },
 
         bindEvents: function() {
@@ -48,23 +48,33 @@ if (!defined('ABSPATH')) {
         },
 
         loadProducts: function() {
-            // Initialize layout toggle - Default to slider
-            const defaultView = 'slider';
-            $(`.spc-view-btn[data-view="${defaultView}"]`).addClass('active');
-            $(`.spc-products-${defaultView}`).addClass('active');
-
-            // Show appropriate card loader - Default to slider
+            // Show loader initially
+            $('#spc-products-loading').show();
+            $('#spc-products-grid').hide();
+            
+            // Show slider card loader by default (since default is slider)
             $('.spc-card-loader-slider').show();
             $('.spc-card-loader-grid').hide();
 
-            // Simulate loading delay for card loader
+            // Simulate loading delay
             setTimeout(() => {
                 $('#spc-products-loading').fadeOut(300, function() {
-                    $('#spc-products-grid').fadeIn(300);
-                    // Initialize Swiper after products are loaded
-                    SPC.initSwiper();
-                    // After products are loaded, ensure cart content is displayed
-                    SPC.loadCartContent();
+                    $('#spc-products-grid').fadeIn(300, function() {
+                        // Initialize all category layouts - Default to slider view for all categories
+                        $('.spc-category-section').each(function() {
+                            const categorySlug = $(this).data('category');
+                            $(`.spc-view-btn[data-category="${categorySlug}"][data-view="slider"]`).addClass('active');
+                            $(`.spc-view-btn[data-category="${categorySlug}"][data-view="grid"]`).removeClass('active');
+                            $(`.spc-products-slider[data-category="${categorySlug}"]`).addClass('active').show();
+                            $(`.spc-products-grid[data-category="${categorySlug}"]`).removeClass('active').hide();
+                            
+                            // Initialize swiper for this category
+                            SPC.initSwiper(categorySlug);
+                        });
+                        
+                        // Load cart content after products are displayed
+                        SPC.loadCartContent();
+                    });
                 });
             }, 800);
         },
@@ -426,95 +436,133 @@ if (!defined('ABSPATH')) {
             }
         },
 
-        // Layout switching functionality
+        // Layout switching functionality for categories
         switchLayout: function(e) {
             e.preventDefault();
             const $btn = $(this);
             const layout = $btn.data('view');
+            const category = $btn.data('category');
 
-            // Update active button
-            $('.spc-view-btn').removeClass('active');
+            // Don't proceed if already active
+            if ($btn.hasClass('active')) return;
+
+            // Update active button for this category only
+            $(`.spc-view-btn[data-category="${category}"]`).removeClass('active');
             $btn.addClass('active');
 
-            // Show loader and hide products during transition
-            $('#spc-products-grid').fadeOut(150, function() {
-                $('#spc-products-loading').fadeIn(150);
+            // Get category-specific elements
+            const $categorySection = $(`.spc-category-section[data-category="${category}"]`);
+            const $gridLayout = $categorySection.find(`.spc-products-grid[data-category="${category}"]`);
+            const $sliderLayout = $categorySection.find(`.spc-products-slider[data-category="${category}"]`);
+            const $categoryLoader = $(`.spc-category-loading[data-category="${category}"]`);
 
-                // Show appropriate card loader based on target layout
-                if (layout === 'grid') {
-                    $('.spc-card-loader-slider').hide();
-                    $('.spc-card-loader-grid').show();
-                } else {
-                    $('.spc-card-loader-grid').hide();
-                    $('.spc-card-loader-slider').show();
-                }
+            // Show appropriate card loader for this category
+            if (layout === 'grid') {
+                $categoryLoader.find('.spc-card-loader-slider').hide();
+                $categoryLoader.find('.spc-card-loader-grid').show();
+            } else {
+                $categoryLoader.find('.spc-card-loader-grid').hide();
+                $categoryLoader.find('.spc-card-loader-slider').show();
+            }
 
-                // Simulate loading time and then switch layouts
+            // Hide current layouts and show category-specific loader
+            $gridLayout.fadeOut(200);
+            $sliderLayout.fadeOut(200, function() {
+                $categoryLoader.fadeIn(200);
+                
+                // Switch layouts after loader is shown
                 setTimeout(() => {
-                    // Show/hide layouts
                     if (layout === 'grid') {
-                        $('.spc-products-grid').show().addClass('active');
-                        $('.spc-products-slider').hide().removeClass('active');
-
-                        // Destroy swiper if exists
-                        if (SPC.swiper) {
-                            SPC.swiper.destroy(true, true);
-                            SPC.swiper = null;
+                        // Destroy swiper for this category if exists
+                        if (SPC.swipers[category]) {
+                            SPC.swipers[category].destroy(true, true);
+                            delete SPC.swipers[category];
                         }
+                        
+                        $sliderLayout.hide().removeClass('active');
+                        $gridLayout.addClass('active').show();
                     } else {
-                        $('.spc-products-grid').hide().removeClass('active');
-                        $('.spc-products-slider').show().addClass('active');
-
-                        // Initialize swiper for slider layout
-                        setTimeout(() => SPC.initSwiper(), 100);
+                        $gridLayout.hide().removeClass('active');
+                        $sliderLayout.addClass('active').show();
+                        
+                        // Initialize swiper for this category
+                        setTimeout(() => SPC.initSwiper(category), 100);
                     }
 
-                    // Hide loader and show products
-                    $('#spc-products-loading').fadeOut(150, function() {
-                        $('#spc-products-grid').fadeIn(150, function() {
-                            // Initialize swiper for slider layout AFTER the fadeIn is complete
-                            if (layout === 'slider') {
-                                // Add extra delay to ensure DOM is fully rendered
-                                setTimeout(() => SPC.initSwiper(), 300);
-                            }
-                            
-                            // Sync selection states between layouts
-                            SPC.syncProductSelectionStates();
-
-                            SPC.showToast('Layout switched to ' + layout + ' view',
-                                'success', 'View Changed');
-                        });
+                    // Hide category loader and show updated layouts
+                    $categoryLoader.fadeOut(200, function() {
+                        if (layout === 'grid') {
+                            $gridLayout.fadeIn(200);
+                        } else {
+                            $sliderLayout.fadeIn(200);
+                        }
+                        
+                        // Sync selection states and show toast
+                        SPC.syncProductSelectionStates();
+                        SPC.showToast(`${category.charAt(0).toUpperCase() + category.slice(1)} layout switched to ${layout} view`, 'success', 'View Changed');
                     });
-                }, 600); // Loading simulation time
+                }, 600); // Simulate loading time
             });
         },
 
-        // Initialize Swiper.js
-        initSwiper: function() {
-            // Only initialize if we're in slider mode and swiper doesn't exist
-            if ($('.spc-products-slider').is(':visible') && !SPC.swiper) {
-                SPC.swiper = new Swiper('.spc-slider-track', {
-                    slidesPerView: 1,
-                    spaceBetween: 0,
-                    freeMode: true,
-                    grabCursor: true,
-                    navigation: {
-                        nextEl: '.spc-slider-next',
-                        prevEl: '.spc-slider-prev',
-                    },
-                    breakpoints: {
-                        640: {
+        // Initialize Swiper.js for specific category
+        initSwiper: function(category = null) {
+            if (category) {
+                // Initialize swiper for specific category
+                const sliderSelector = `.spc-slider-track[data-category="${category}"]`;
+                const nextSelector = `.spc-slider-next[data-category="${category}"]`;
+                const prevSelector = `.spc-slider-prev[data-category="${category}"]`;
+                
+                // Destroy existing swiper for this category if exists
+                if (SPC.swipers[category]) {
+                    SPC.swipers[category].destroy(true, true);
+                    delete SPC.swipers[category];
+                }
+                
+                // Only initialize if the slider container exists and is visible
+                if ($(sliderSelector).length && $(`.spc-products-slider[data-category="${category}"]`).is(':visible')) {
+                    try {
+                        SPC.swipers[category] = new Swiper(sliderSelector, {
                             slidesPerView: 1,
-                            spaceBetween: 15,
-                        },
-                        768: {
-                            slidesPerView: 3,
-                            spaceBetween: 20,
-                        },
-                        1024: {
-                            slidesPerView: 3,
-                            spaceBetween: 24,
-                        }
+                            spaceBetween: 0,
+                            freeMode: true,
+                            grabCursor: true,
+                            observer: true,
+                            observeParents: true,
+                            navigation: {
+                                nextEl: nextSelector,
+                                prevEl: prevSelector,
+                            },
+                            breakpoints: {
+                                640: {
+                                    slidesPerView: 1,
+                                    spaceBetween: 15,
+                                },
+                                768: {
+                                    slidesPerView: 3,
+                                    spaceBetween: 20,
+                                },
+                                1024: {
+                                    slidesPerView: 3,
+                                    spaceBetween: 24,
+                                }
+                            },
+                            on: {
+                                init: function() {
+                                    console.log(`Swiper initialized for category: ${category}`);
+                                }
+                            }
+                        });
+                    } catch (error) {
+                        console.error(`Error initializing Swiper for category ${category}:`, error);
+                    }
+                }
+            } else {
+                // Initialize all category swipers that are in slider mode
+                $('.spc-category-section').each(function() {
+                    const categorySlug = $(this).data('category');
+                    if ($(`.spc-products-slider[data-category="${categorySlug}"]`).is(':visible')) {
+                        SPC.initSwiper(categorySlug);
                     }
                 });
             }
@@ -580,6 +628,123 @@ if (!defined('ABSPATH')) {
 </script>
 
 <style>
+/* Category Section Styles */
+.spc-category-section {
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+.spc-category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--spc-border, #e5e7eb);
+}
+
+.spc-category-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--spc-text-primary, #1f2937);
+    text-transform: capitalize;
+}
+
+.spc-category-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.spc-view-toggle {
+    display: flex;
+    background: var(--spc-bg-card, #ffffff);
+    border: 1px solid var(--spc-border, #e5e7eb);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.spc-view-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--spc-text-secondary, #6b7280);
+}
+
+.spc-view-btn:hover {
+    background: var(--spc-bg-hover, #f9fafb);
+    color: var(--spc-text-primary, #1f2937);
+}
+
+.spc-view-btn.active {
+    background: var(--spc-pink, #ec4899);
+    color: white;
+}
+
+.spc-view-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Grid Layout Styles for Categories */
+.spc-products-grid[data-category] {
+    display: none;
+}
+
+.spc-products-grid[data-category].active {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Slider Layout Styles for Categories */
+.spc-products-slider[data-category] {
+    display: none;
+}
+
+.spc-products-slider[data-category].active {
+    display: block;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .spc-category-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .spc-category-title {
+        font-size: 1.5rem;
+    }
+    
+    .spc-view-btn {
+        padding: 0.625rem 0.875rem;
+        font-size: 0.8rem;
+    }
+    
+    .spc-products-grid[data-category].active {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .spc-products-grid[data-category].active {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
 .spc-loading {
     position: relative;
     pointer-events: none;
