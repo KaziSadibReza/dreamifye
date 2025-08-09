@@ -26,7 +26,8 @@ defined( 'ABSPATH' ) || exit;
 
     <?php else : ?>
 
-    <h3><?php esc_html_e( 'Billing details', 'woocommerce' ); ?></h3>
+    <h3><?php esc_html_e( 'অর্ডার করার পরে আমাদের প্রতিনিধি আপনাকে কল করে পণ্য সাইজ ও মূল্য কনফার্ম হয়ে নিবে।', 'woocommerce' ); ?>
+    </h3>
 
     <?php endif; ?>
 
