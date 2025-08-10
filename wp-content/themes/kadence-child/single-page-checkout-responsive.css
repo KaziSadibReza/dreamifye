@@ -70,6 +70,13 @@
     padding: 12px 15px;
     font-size: 0.9rem;
   }
+  #payment .bdpg-acc__qr-code {
+    height: 240px;
+    width: 100%;
+  }
+  #payment .bdpg-acc__qr-code img {
+    margin: 0 !important;
+  }
   .woocommerce-billing-fields h3 {
     text-align: center;
     padding-top: 20px;

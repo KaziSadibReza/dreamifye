@@ -39,7 +39,7 @@ function kadence_child_enqueue_styles() {
         'single-page-checkout-responsive-css',
         get_stylesheet_directory_uri() . '/single-page-checkout-responsive.css',
         array('single-page-checkout-css'),
-        '1.0.4' // Responsive design optimizations
+        '1.0.5' // Responsive design optimizations
     );
     
     // Enqueue jQuery if not already loaded
