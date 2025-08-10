@@ -70,6 +70,10 @@
     padding: 12px 15px;
     font-size: 0.9rem;
   }
+  .woocommerce-billing-fields h3 {
+    text-align: center;
+    padding-top: 20px;
+  }
   /* Container and Layout */
   .spc-container {
     padding: var(--spc-space-md);

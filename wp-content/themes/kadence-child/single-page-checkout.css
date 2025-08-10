@@ -98,6 +98,27 @@
   display: none;
 }
 
+#payment .payment_box {
+  padding: 20px !important;
+  margin: 0px !important;
+}
+#payment .bdpg-acc__qr-code {
+  height: 300px;
+  width: 300px;
+}
+
+#payment input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid var(--spc-border-color);
+  border-radius: var(--spc-border-radius-sm);
+  font-size: 0.95rem;
+  background: white;
+  transition: all var(--spc-transition);
+}
+#payment input:hover {
+  border-color: var(--spc-pink);
+}
 /* Card Loader Base */
 .spc-card-loader {
   background: var(--spc-bg-card);
