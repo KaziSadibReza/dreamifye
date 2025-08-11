@@ -63,8 +63,7 @@
   --spc-space-xl: 3rem;
 
   /* Typography */
-  --spc-font-primary: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, sans-serif;
+  --spc-font-primary: "Urbanist", sans-serif;
   --spc-font-weight-normal: 400;
   --spc-font-weight-medium: 500;
   --spc-font-weight-semibold: 600;
