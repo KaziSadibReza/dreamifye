@@ -51,7 +51,7 @@ if (!defined('ABSPATH')) {
             // Show loader initially
             $('#spc-products-loading').show();
             $('#spc-products-grid').hide();
-            
+
             // Show slider card loader by default (since default is slider)
             $('.spc-card-loader-slider').show();
             $('.spc-card-loader-grid').hide();
@@ -63,15 +63,19 @@ if (!defined('ABSPATH')) {
                         // Initialize all category layouts - Default to slider view for all categories
                         $('.spc-category-section').each(function() {
                             const categorySlug = $(this).data('category');
-                            $(`.spc-view-btn[data-category="${categorySlug}"][data-view="slider"]`).addClass('active');
-                            $(`.spc-view-btn[data-category="${categorySlug}"][data-view="grid"]`).removeClass('active');
-                            $(`.spc-products-slider[data-category="${categorySlug}"]`).addClass('active').show();
-                            $(`.spc-products-grid[data-category="${categorySlug}"]`).removeClass('active').hide();
-                            
+                            $(`.spc-view-btn[data-category="${categorySlug}"][data-view="slider"]`)
+                                .addClass('active');
+                            $(`.spc-view-btn[data-category="${categorySlug}"][data-view="grid"]`)
+                                .removeClass('active');
+                            $(`.spc-products-slider[data-category="${categorySlug}"]`)
+                                .addClass('active').show();
+                            $(`.spc-products-grid[data-category="${categorySlug}"]`)
+                                .removeClass('active').hide();
+
                             // Initialize swiper for this category
                             SPC.initSwiper(categorySlug);
                         });
-                        
+
                         // Load cart content after products are displayed
                         SPC.loadCartContent();
                     });
@@ -241,20 +245,20 @@ if (!defined('ABSPATH')) {
                         SPC.updateCartContent(response.data.cart_html, response.data
                             .order_review_html);
                         SPC.updateCheckoutContent(response.data.checkout_html);
-                        SPC.showToast(`${productTitle} added to cart!`, 'success',
-                            'Product Added');
-                        
+                        SPC.showToast(`${productTitle} কার্টে যোগ করা হয়েছে!`, 'success',
+                            'পণ্য যোগ করা হয়েছে');
+
                         // Trigger cart validation check
                         $(document).trigger('spc_cart_updated');
                     } else {
-                        SPC.showToast(response.data || 'Failed to add product to cart', 'error',
-                            'Error');
+                        SPC.showToast(response.data || 'পণ্য কার্টে যোগ করতে ব্যর্থ', 'error',
+                            'ত্রুটি');
                     }
                 },
                 error: function() {
                     $product.removeClass('spc-loading');
-                    SPC.showToast('Network error. Please try again.', 'error',
-                        'Connection Error');
+                    SPC.showToast('নেটওয়ার্ক ত্রুটি। আবার চেষ্টা করুন।', 'error',
+                        'সংযোগ ত্রুটি');
                 }
             });
         },
@@ -274,13 +278,13 @@ if (!defined('ABSPATH')) {
                             productTitle);
                     } else {
                         $product.removeClass('spc-loading');
-                        SPC.showToast('Failed to remove product from cart', 'error', 'Error');
+                        SPC.showToast('কার্ট থেকে পণ্য সরাতে ব্যর্থ', 'error', 'ত্রুটি');
                     }
                 },
                 error: function() {
                     $product.removeClass('spc-loading');
-                    SPC.showToast('Network error. Please try again.', 'error',
-                        'Connection Error');
+                    SPC.showToast('নেটওয়ার্ক ত্রুটি। আবার চেষ্টা করুন।', 'error',
+                        'সংযোগ ত্রুটি');
                 }
             });
         },
@@ -302,20 +306,20 @@ if (!defined('ABSPATH')) {
                         SPC.updateCartContent(response.data.cart_html, response.data
                             .order_review_html);
                         SPC.updateCheckoutContent(response.data.checkout_html);
-                        SPC.showToast(`${productTitle} removed from cart`, 'success',
-                            'Product Removed');
-                        
+                        SPC.showToast(`${productTitle} কার্ট থেকে সরানো হয়েছে`, 'success',
+                            'পণ্য সরানো হয়েছে');
+
                         // Trigger cart validation check
                         $(document).trigger('spc_cart_updated');
                     } else {
-                        SPC.showToast(response.data || 'Failed to remove product from cart',
-                            'error', 'Error');
+                        SPC.showToast(response.data || 'কার্ট থেকে পণ্য সরাতে ব্যর্থ',
+                            'error', 'ত্রুটি');
                     }
                 },
                 error: function() {
                     $product.removeClass('spc-loading');
-                    SPC.showToast('Network error. Please try again.', 'error',
-                        'Connection Error');
+                    SPC.showToast('নেটওয়ার্ক ত্রুটি। আবার চেষ্টা করুন।', 'error',
+                        'সংযোগ ত্রুটি');
                 }
             });
         },
@@ -348,19 +352,19 @@ if (!defined('ABSPATH')) {
                         SPC.updateCartContent(response.data.cart_html, response.data
                             .order_review_html);
                         SPC.updateCheckoutContent(response.data.checkout_html);
-                        SPC.showToast(`${productTitle} removed from cart`, 'success',
-                            'Product Removed');
-                        
+                        SPC.showToast(`${productTitle} কার্ট থেকে সরানো হয়েছে`, 'success',
+                            'পণ্য সরানো হয়েছে');
+
                         // Trigger cart validation check
                         $(document).trigger('spc_cart_updated');
                     } else {
-                        SPC.showToast(response.data || 'Failed to remove product from cart',
-                            'error', 'Error');
+                        SPC.showToast(response.data || 'কার্ট থেকে পণ্য সরাতে ব্যর্থ',
+                            'error', 'ত্রুটি');
                     }
                 },
                 error: function() {
-                    SPC.showToast('Network error. Please try again.', 'error',
-                        'Connection Error');
+                    SPC.showToast('নেটওয়ার্ক ত্রুটি। আবার চেষ্টা করুন।', 'error',
+                        'সংযোগ ত্রুটি');
                 }
             });
         },
@@ -394,19 +398,20 @@ if (!defined('ABSPATH')) {
                             .order_review_html);
                         SPC.updateCheckoutContent(response.data.checkout_html);
 
-                        const actionText = action === 'increase' ? 'increased' : 'decreased';
-                        SPC.showToast(`${productTitle} quantity ${actionText}`, 'success');
-                        
+                        const actionText = action === 'increase' ? 'বৃদ্ধি করা হয়েছে' :
+                            'কমানো হয়েছে';
+                        SPC.showToast(`${productTitle} এর পরিমাণ ${actionText}`, 'success');
+
                         // Trigger cart validation check
                         $(document).trigger('spc_cart_updated');
                     } else {
-                        SPC.showToast(response.data || 'Failed to update quantity', 'error',
-                            'Error');
+                        SPC.showToast(response.data || 'পরিমাণ আপডেট করতে ব্যর্থ', 'error',
+                            'ত্রুটি');
                     }
                 },
                 error: function() {
-                    SPC.showToast('Network error. Please try again.', 'error',
-                        'Connection Error');
+                    SPC.showToast('নেটওয়ার্ক ত্রুটি। আবার চেষ্টা করুন।', 'error',
+                        'সংযোগ ত্রুটি');
                 }
             });
         },
@@ -465,7 +470,8 @@ if (!defined('ABSPATH')) {
             // Get category-specific elements
             const $categorySection = $(`.spc-category-section[data-category="${category}"]`);
             const $gridLayout = $categorySection.find(`.spc-products-grid[data-category="${category}"]`);
-            const $sliderLayout = $categorySection.find(`.spc-products-slider[data-category="${category}"]`);
+            const $sliderLayout = $categorySection.find(
+            `.spc-products-slider[data-category="${category}"]`);
             const $categoryLoader = $(`.spc-category-loading[data-category="${category}"]`);
 
             // Show appropriate card loader for this category
@@ -481,7 +487,7 @@ if (!defined('ABSPATH')) {
             $gridLayout.fadeOut(200);
             $sliderLayout.fadeOut(200, function() {
                 $categoryLoader.fadeIn(200);
-                
+
                 // Switch layouts after loader is shown
                 setTimeout(() => {
                     if (layout === 'grid') {
@@ -490,13 +496,13 @@ if (!defined('ABSPATH')) {
                             SPC.swipers[category].destroy(true, true);
                             delete SPC.swipers[category];
                         }
-                        
+
                         $sliderLayout.hide().removeClass('active');
                         $gridLayout.addClass('active').show();
                     } else {
                         $gridLayout.hide().removeClass('active');
                         $sliderLayout.addClass('active').show();
-                        
+
                         // Initialize swiper for this category
                         setTimeout(() => SPC.initSwiper(category), 100);
                     }
@@ -508,10 +514,13 @@ if (!defined('ABSPATH')) {
                         } else {
                             $sliderLayout.fadeIn(200);
                         }
-                        
+
                         // Sync selection states and show toast
                         SPC.syncProductSelectionStates();
-                        SPC.showToast(`${category.charAt(0).toUpperCase() + category.slice(1)} layout switched to ${layout} view`, 'success', 'View Changed');
+                        const layoutText = layout === 'grid' ? 'গ্রিড' : 'স্লাইডার';
+                        SPC.showToast(
+                            `${category.charAt(0).toUpperCase() + category.slice(1)} লেআউট ${layoutText} ভিউতে পরিবর্তিত হয়েছে`,
+                            'success', 'ভিউ পরিবর্তিত হয়েছে');
                     });
                 }, 600); // Simulate loading time
             });
@@ -524,15 +533,16 @@ if (!defined('ABSPATH')) {
                 const sliderSelector = `.spc-slider-track[data-category="${category}"]`;
                 const nextSelector = `.spc-slider-next[data-category="${category}"]`;
                 const prevSelector = `.spc-slider-prev[data-category="${category}"]`;
-                
+
                 // Destroy existing swiper for this category if exists
                 if (SPC.swipers[category]) {
                     SPC.swipers[category].destroy(true, true);
                     delete SPC.swipers[category];
                 }
-                
+
                 // Only initialize if the slider container exists and is visible
-                if ($(sliderSelector).length && $(`.spc-products-slider[data-category="${category}"]`).is(':visible')) {
+                if ($(sliderSelector).length && $(`.spc-products-slider[data-category="${category}"]`).is(
+                        ':visible')) {
                     try {
                         SPC.swipers[category] = new Swiper(sliderSelector, {
                             slidesPerView: 1,
@@ -734,16 +744,16 @@ if (!defined('ABSPATH')) {
         align-items: flex-start;
         gap: 1rem;
     }
-    
+
     .spc-category-title {
         font-size: 1.5rem;
     }
-    
+
     .spc-view-btn {
         padding: 0.625rem 0.875rem;
         font-size: 0.8rem;
     }
-    
+
     .spc-products-grid[data-category].active {
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         gap: 1rem;
