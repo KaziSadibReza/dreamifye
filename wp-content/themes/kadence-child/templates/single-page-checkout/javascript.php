@@ -769,7 +769,7 @@ if (!defined('ABSPATH')) {
 
 @media (max-width: 480px) {
     .spc-products-grid[data-category].active {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
         gap: 1rem;
     }
 }

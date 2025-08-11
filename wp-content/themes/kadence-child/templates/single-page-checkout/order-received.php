@@ -78,14 +78,15 @@ if ($order_key && $order->get_order_key() !== $order_key) {
     <div class="spc-success-header">
         <div class="spc-success-icon">
             <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="10" fill="#10B981" />
+                <circle cx="12" cy="12" r="10" fill="#d49ebf" />
                 <path d="m9 12 2 2 4-4" stroke="white" stroke-width="2" stroke-linecap="round"
                     stroke-linejoin="round" />
             </svg>
         </div>
-        <h1 class="spc-success-title">Order Confirmed!</h1>
-        <p class="spc-success-subtitle">Thank you for your purchase. Your order has been received and is being
-            processed.</p>
+        <h1 class="spc-success-title">আপনার অর্ডারটি কর্নফাম করা হইছে </h1>
+        <h2 class="spc-success-titl">আপনি ফ্রি হোম ডেলিভারি পেয়েছেন </h2>
+        <p class="spc-success-subtitle">আপনার বেক্তিগত কোনো কারনে প্রডাক্ট রির্টান করলে ডেলিভারি চার্জ দিয়ে রির্টান করতে
+            হবে</p>
     </div>
 
     <div class="spc-order-details-grid">
@@ -157,7 +158,7 @@ if ($order_key && $order->get_order_key() !== $order_key) {
                 <?php if ($order->get_billing_address_2()) : ?>
                 <p><?php echo $order->get_billing_address_2(); ?></p>
                 <?php endif; ?>
-                <p><?php echo $order->get_billing_city() . ', ' . $order->get_billing_state() . ' ' . $order->get_billing_postcode(); ?>
+                <p><?php echo $order->get_billing_city() . ' ' . $order->get_billing_state() . ' ' . $order->get_billing_postcode(); ?>
                 </p>
                 <p><?php echo $order->get_billing_country(); ?></p>
                 <?php if ($order->get_billing_phone()) : ?>
@@ -181,7 +182,7 @@ if ($order_key && $order->get_order_key() !== $order_key) {
                 <?php if ($order->get_shipping_address_2()) : ?>
                 <p><?php echo $order->get_shipping_address_2(); ?></p>
                 <?php endif; ?>
-                <p><?php echo $order->get_shipping_city() . ', ' . $order->get_shipping_state() . ' ' . $order->get_shipping_postcode(); ?>
+                <p><?php echo $order->get_shipping_city() . ' ' . $order->get_shipping_state() . ' ' . $order->get_shipping_postcode(); ?>
                 </p>
                 <p><?php echo $order->get_shipping_country(); ?></p>
             </div>
@@ -232,13 +233,14 @@ if ($order_key && $order->get_order_key() !== $order_key) {
     <!-- Additional Information -->
     <div class="spc-order-notes">
         <div class="spc-note-card">
-            <h4>What happens next?</h4>
+            <h4>এরপর কী হবে?</h4>
             <ul>
-                <li>You will receive an order confirmation email shortly</li>
-                <li>We'll notify you when your order ships</li>
-                <li>Track your order status in your account</li>
-                <li>Contact us if you have any questions</li>
+                <li>আপনি শীঘ্রই একটি অর্ডার নিশ্চিতকরণ ইমেইল পাবেন</li>
+                <li>আপনার অর্ডার পাঠানোর সময় আমরা আপনাকে জানাবো</li>
+                <li>আপনার অ্যাকাউন্ট থেকে অর্ডারের অবস্থা ট্র্যাক করতে পারবেন</li>
+                <li>যদি কোনও প্রশ্ন থাকে তবে আমাদের সাথে যোগাযোগ করুন</li>
             </ul>
         </div>
     </div>
+
 </div>
