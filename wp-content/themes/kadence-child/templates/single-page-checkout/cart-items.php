@@ -30,6 +30,13 @@ if (WC()->cart->is_empty()) {
     
     if (!$product) continue;
     
+    // Check if product is hidden from catalog
+    $product_visibility_terms = wp_get_post_terms($product_id, 'product_visibility', array('fields' => 'names'));
+    $is_hidden = in_array('exclude-from-catalog', $product_visibility_terms) || in_array('exclude-from-search', $product_visibility_terms);
+    
+    // Skip hidden products in cart
+    if ($is_hidden) continue;
+    
     $product_image = wp_get_attachment_image_src(get_post_thumbnail_id($product_id), 'medium');
     $product_image_url = $product_image ? $product_image[0] : wc_placeholder_img_src('medium');
     $product_permalink = get_permalink($product_id);

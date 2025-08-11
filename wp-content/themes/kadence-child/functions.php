@@ -198,18 +198,24 @@ class SinglePageCheckout {
                     'value' => 'instock'
                 )
             ),
+            'tax_query' => array(
+                array(
+                    'taxonomy' => 'product_visibility',
+                    'field' => 'name',
+                    'terms' => array('exclude-from-catalog', 'exclude-from-search'),
+                    'operator' => 'NOT IN'
+                )
+            ),
             'orderby' => 'menu_order',
             'order' => 'ASC'
         );
         
         // Only apply category filter if specifically requested
         if (!empty($atts['category']) && $atts['category'] !== 'all') {
-            $args['tax_query'] = array(
-                array(
-                    'taxonomy' => 'product_cat',
-                    'field' => 'slug',
-                    'terms' => sanitize_text_field($atts['category'])
-                )
+            $args['tax_query'][] = array(
+                'taxonomy' => 'product_cat',
+                'field' => 'slug',
+                'terms' => sanitize_text_field($atts['category'])
             );
         }
         
@@ -240,6 +246,38 @@ class SinglePageCheckout {
             return '<div class="spc-cart-empty-message"></div>';
         }
 
+        // Check if there are any visible products after filtering
+        $enabler_id = get_option('spc_enabler_product_id');
+        $has_visible_products = false;
+        
+        foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
+            $_product = apply_filters('woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key);
+            
+            // Skip enabler product
+            if ($enabler_id && $cart_item['product_id'] == $enabler_id) {
+                continue;
+            }
+            
+            // Check if product is hidden from catalog
+            $product_visibility_terms = wp_get_post_terms($cart_item['product_id'], 'product_visibility', array('fields' => 'names'));
+            $is_hidden = in_array('exclude-from-catalog', $product_visibility_terms) || in_array('exclude-from-search', $product_visibility_terms);
+            
+            // Skip hidden products
+            if ($is_hidden) {
+                continue;
+            }
+            
+            if ($_product && $_product->exists() && $cart_item['quantity'] > 0) {
+                $has_visible_products = true;
+                break;
+            }
+        }
+        
+        // If no visible products, show empty message
+        if (!$has_visible_products) {
+            return '<p style="text-align: center; color: var(--spc-text-secondary); padding: var(--spc-space-lg);">Your cart is empty. Select products to add them to your cart.</p>';
+        }
+
         ob_start();
         ?>
 <div class="spc-order-review">
@@ -255,6 +293,21 @@ class SinglePageCheckout {
             <?php
                     foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
                         $_product = apply_filters('woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key);
+                        
+                        // Skip enabler product
+                        if ($enabler_id && $cart_item['product_id'] == $enabler_id) {
+                            continue;
+                        }
+                        
+                        // Check if product is hidden from catalog
+                        $product_visibility_terms = wp_get_post_terms($cart_item['product_id'], 'product_visibility', array('fields' => 'names'));
+                        $is_hidden = in_array('exclude-from-catalog', $product_visibility_terms) || in_array('exclude-from-search', $product_visibility_terms);
+                        
+                        // Skip hidden products in order review
+                        if ($is_hidden) {
+                            continue;
+                        }
+                        
                         if ($_product && $_product->exists() && $cart_item['quantity'] > 0) {
                             ?>
             <tr class="spc-cart-item-row">
@@ -364,6 +417,43 @@ class SinglePageCheckout {
             return '<p>Checkout is not available.</p>';
         }
         
+        // Get enabler product ID
+        $enabler_id = get_option('spc_enabler_product_id');
+        
+        // Check if cart has real products (not just enabler)
+        $has_real_products = false;
+        foreach (WC()->cart->get_cart() as $cart_item) {
+            if ($cart_item['product_id'] != $enabler_id) {
+                $has_real_products = true;
+                break;
+            }
+        }
+        
+        // If no real products, add enabler to show checkout form
+        if (!$has_real_products && $enabler_id) {
+            // Check if enabler is already in cart to prevent duplicates
+            $enabler_in_cart = false;
+            foreach (WC()->cart->get_cart() as $cart_item) {
+                if ($cart_item['product_id'] == $enabler_id) {
+                    $enabler_in_cart = true;
+                    break;
+                }
+            }
+            
+            // Only add if not already in cart
+            if (!$enabler_in_cart) {
+                WC()->cart->add_to_cart($enabler_id, 1);
+            }
+        }
+        
+        // Hide enabler product from checkout display
+        add_filter('woocommerce_cart_item_visible', array(__CLASS__, 'hide_enabler_product'), 10, 3);
+        add_filter('woocommerce_checkout_cart_item_visible', array(__CLASS__, 'hide_enabler_product'), 10, 3);
+        add_filter('woocommerce_widget_cart_item_visible', array(__CLASS__, 'hide_enabler_product'), 10, 3);
+        
+        // Ensure cart total calculation excludes enabler product
+        add_filter('woocommerce_cart_needs_payment', array(__CLASS__, 'cart_needs_payment_check'), 10, 2);
+        
         if (WC()->cart->get_cart_contents_count() > 0) {
             return do_shortcode('[woocommerce_checkout]');
         }
@@ -371,6 +461,24 @@ class SinglePageCheckout {
         return '<p>Your cart is empty. Please add products to proceed with checkout.</p>';
     }
     
+    /**
+     * Hide enabler product from cart/checkout displays
+     */
+    public static function hide_enabler_product($visible, $cart_item, $cart_item_key) {
+        $enabler_id = get_option('spc_enabler_product_id');
+        if ($enabler_id && $cart_item['product_id'] == $enabler_id) {
+            return false;
+        }
+        return $visible;
+    }
+    
+    /**
+     * Check if cart needs payment (exclude enabler product from calculation)
+     */
+    public static function cart_needs_payment_check($needs_payment, $cart) {
+    // Force payment methods to show on the single page checkout.
+    return true;
+}
     /**
      * AJAX handler for adding to cart
      */
@@ -390,6 +498,17 @@ class SinglePageCheckout {
         if (!$product_id) {
             wp_send_json_error('Invalid product ID');
             return;
+        }
+        
+        // Remove enabler product before adding real product
+        $enabler_id = get_option('spc_enabler_product_id');
+        if ($enabler_id) {
+            foreach (WC()->cart->get_cart() as $key => $cart_item) {
+                if ($cart_item['product_id'] == $enabler_id) {
+                    WC()->cart->remove_cart_item($key);
+                    break;
+                }
+            }
         }
         
         $cart_item_key = WC()->cart->add_to_cart($product_id, 1);
@@ -429,6 +548,22 @@ class SinglePageCheckout {
         }
         
         WC()->cart->remove_cart_item($cart_item_key);
+        
+        // Check if cart now only has enabler product or is empty
+        $enabler_id = get_option('spc_enabler_product_id');
+        $has_real_products = false;
+        
+        foreach (WC()->cart->get_cart() as $cart_item) {
+            if ($cart_item['product_id'] != $enabler_id) {
+                $has_real_products = true;
+                break;
+            }
+        }
+        
+        // If no real products left, add enabler to keep checkout form working
+        if (!$has_real_products && $enabler_id) {
+            WC()->cart->add_to_cart($enabler_id, 1);
+        }
         
         // Calculate totals to ensure the session is updated
         WC()->cart->calculate_totals();
@@ -627,3 +762,147 @@ SinglePageCheckout::init();
 
 // Create order received page on theme activation
 add_action('after_switch_theme', array('SinglePageCheckout', 'create_order_received_page'));
+
+/**
+ * =============================================================================
+ * SIMPLE CART ENABLER - ADMIN SETTINGS
+ * =============================================================================
+ */
+
+// Add admin menu
+add_action('admin_menu', 'spc_add_admin_menu');
+function spc_add_admin_menu() {
+    add_submenu_page(
+        'woocommerce',
+        'Cart Enabler Settings',
+        'Cart Enabler',
+        'manage_options',
+        'spc-cart-enabler',
+        'spc_admin_page'
+    );
+}
+
+// Register settings
+add_action('admin_init', 'spc_register_settings');
+function spc_register_settings() {
+    register_setting('spc_cart_enabler', 'spc_enabler_product_id');
+}
+
+// Admin page content
+function spc_admin_page() {
+    ?>
+<div class="wrap">
+    <h1>Cart Enabler Settings</h1>
+    <form method="post" action="options.php">
+        <?php settings_fields('spc_cart_enabler'); ?>
+        <table class="form-table">
+            <tr>
+                <th scope="row">$0 USD Product ID</th>
+                <td>
+                    <input type="number" name="spc_enabler_product_id"
+                        value="<?php echo esc_attr(get_option('spc_enabler_product_id')); ?>" />
+                    <p class="description">Enter the Product ID of a product with $0.00 price</p>
+
+                    <?php 
+                        $product_id = get_option('spc_enabler_product_id');
+                        if ($product_id) {
+                            $product = wc_get_product($product_id);
+                            if ($product) {
+                                echo '<p><strong>Current Product:</strong> ' . esc_html($product->get_name()) . '</p>';
+                                echo '<p><strong>Price:</strong> ' . wc_price($product->get_price()) . '</p>';
+                                echo '<p><strong>Status:</strong> ' . ucfirst($product->get_status()) . '</p>';
+                                
+                                if ($product->get_status() === 'private') {
+                                    echo '<p style="color: red;"><strong>⚠️ Warning:</strong> Private products may cause payment method issues. Consider making this product "Published" but hidden from catalog.</p>';
+                                }
+                                
+                                if ($product->get_price() > 0) {
+                                    echo '<p style="color: red;"><strong>⚠️ Warning:</strong> This product has a price greater than $0. This may affect checkout behavior.</p>';
+                                }
+                            } else {
+                                echo '<p style="color: red;"><strong>⚠️ Error:</strong> Product not found.</p>';
+                            }
+                        }
+                        ?>
+                </td>
+            </tr>
+        </table>
+        <?php submit_button(); ?>
+    </form>
+
+    <div class="spc-admin-instructions">
+        <h3>Setup Instructions:</h3>
+        <ol>
+            <li>Create a new WooCommerce product</li>
+            <li>Set the price to exactly <strong>$0.00</strong></li>
+            <li>Set product status to <strong>"Published"</strong> (not Private)</li>
+            <li>Under "Catalog visibility" select <strong>"Hidden"</strong></li>
+            <li>Make it <strong>"Virtual"</strong> (recommended)</li>
+            <li>Copy the Product ID and enter it above</li>
+        </ol>
+
+        <h3>Troubleshooting:</h3>
+        <ul>
+            <li><strong>Payment methods not showing?</strong> Make sure the product is Published, not Private</li>
+            <li><strong>Duplicate products in cart?</strong> Clear your cart and try again</li>
+            <li><strong>Product showing in cart?</strong> Check that the product ID is correct</li>
+        </ul>
+    </div>
+</div>
+
+<style>
+.spc-admin-instructions {
+    margin-top: 30px;
+    padding: 20px;
+    background: #f9f9f9;
+    border-left: 4px solid #007cba;
+}
+
+.spc-admin-instructions ol,
+.spc-admin-instructions ul {
+    margin-left: 20px;
+}
+</style>
+<?php
+}
+
+/**
+ * =============================================================================
+ * SIMPLE CART MANAGEMENT
+ * =============================================================================
+ */
+
+// Add $0 product when checkout is loaded and cart is empty of real products
+add_action('wp', 'spc_manage_enabler_product');
+function spc_manage_enabler_product() {
+    if (!is_page() || !has_shortcode(get_post()->post_content, 'single_page_checkout')) {
+        return;
+    }
+    
+    $enabler_id = get_option('spc_enabler_product_id');
+    if (!$enabler_id || !WC()->cart) return;
+    
+    // Check if cart has real products
+    $has_real_products = false;
+    foreach (WC()->cart->get_cart() as $cart_item) {
+        if ($cart_item['product_id'] != $enabler_id) {
+            $has_real_products = true;
+            break;
+        }
+    }
+    
+    // If no real products, ensure enabler is in cart
+    if (!$has_real_products) {
+        $enabler_in_cart = false;
+        foreach (WC()->cart->get_cart() as $cart_item) {
+            if ($cart_item['product_id'] == $enabler_id) {
+                $enabler_in_cart = true;
+                break;
+            }
+        }
+        
+        if (!$enabler_in_cart) {
+            WC()->cart->add_to_cart($enabler_id, 1);
+        }
+    }
+}
