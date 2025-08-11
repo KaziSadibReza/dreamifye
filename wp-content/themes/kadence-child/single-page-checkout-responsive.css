@@ -342,12 +342,13 @@
 
   /* Product Overlay */
   .spc-product-overlay {
-    padding: 10px 5px;
+    padding: 10px 5px 10px 12px;
     opacity: 1 !important;
   }
 
   .spc-product-overlay .spc-product-price {
-    font-size: 1rem;
+    font-size: 1.8rem;
+    color: #e91e63;
   }
 
   /* Zoom Controls */
