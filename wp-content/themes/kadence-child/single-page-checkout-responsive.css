@@ -65,6 +65,11 @@
    ============================================================================= */
 
 @media (max-width: 768px) {
+  .spc-product-item.selected::after {
+    width: 70px;
+    height: 70px;
+    font-size: 36px;
+  }
   .spc-order-table th,
   .spc-order-table td {
     padding: 12px 15px;
@@ -347,7 +352,7 @@
   }
 
   .spc-product-overlay .spc-product-price {
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 
   /* Zoom Controls */
@@ -535,8 +540,8 @@
     min-width: 44px;
   }
   .spc-zoom-btn {
-    min-height: 50px;
-    min-width: 50px;
+    min-height: 70px;
+    min-width: 70px;
   }
   /* Improve text readability */
   .spc-cart-item-title,

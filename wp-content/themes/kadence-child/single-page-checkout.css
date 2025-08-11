@@ -944,7 +944,7 @@
 
 #spc-zoom-image {
   max-width: 100%;
-  max-height: 100%;
+  max-height: 580px;
   border-radius: var(--spc-border-radius);
   box-shadow: var(--spc-shadow-xl);
 }

@@ -31,7 +31,7 @@ function kadence_child_enqueue_styles() {
         'single-page-checkout-css',
         get_stylesheet_directory_uri() . '/single-page-checkout.css',
         array(),
-        '3.3.7' // Updated for enhanced checkout form design
+        '3.3.8' // Updated for enhanced checkout form design
     );
     
     // Enqueue responsive CSS file for mobile and tablet

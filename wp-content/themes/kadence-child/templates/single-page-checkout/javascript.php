@@ -471,7 +471,7 @@ if (!defined('ABSPATH')) {
             const $categorySection = $(`.spc-category-section[data-category="${category}"]`);
             const $gridLayout = $categorySection.find(`.spc-products-grid[data-category="${category}"]`);
             const $sliderLayout = $categorySection.find(
-            `.spc-products-slider[data-category="${category}"]`);
+                `.spc-products-slider[data-category="${category}"]`);
             const $categoryLoader = $(`.spc-category-loading[data-category="${category}"]`);
 
             // Show appropriate card loader for this category
@@ -545,19 +545,24 @@ if (!defined('ABSPATH')) {
                         ':visible')) {
                     try {
                         SPC.swipers[category] = new Swiper(sliderSelector, {
-                            slidesPerView: 1,
-                            spaceBetween: 0,
+                            slidesPerView: 2,
+                            spaceBetween: 10,
                             freeMode: true,
                             grabCursor: true,
                             observer: true,
                             observeParents: true,
+                            autoplay: {
+                                delay: 10000, // 1 minute = 60,000 milliseconds
+                                disableOnInteraction: false,
+                                pauseOnMouseEnter: true,
+                            },
                             navigation: {
                                 nextEl: nextSelector,
                                 prevEl: prevSelector,
                             },
                             breakpoints: {
                                 640: {
-                                    slidesPerView: 1,
+                                    slidesPerView: 2,
                                     spaceBetween: 15,
                                 },
                                 768: {
@@ -571,7 +576,9 @@ if (!defined('ABSPATH')) {
                             },
                             on: {
                                 init: function() {
-                                    console.log(`Swiper initialized for category: ${category}`);
+                                    console.log(
+                                        `Swiper initialized for category: ${category} with autoplay (1 minute)`
+                                    );
                                 }
                             }
                         });
