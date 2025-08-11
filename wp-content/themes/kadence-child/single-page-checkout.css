@@ -2784,3 +2784,17 @@
     break-inside: avoid;
   }
 }
+
+/* Simple checkout message */
+.checkout-message {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

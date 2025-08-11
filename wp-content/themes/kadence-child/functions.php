@@ -45,6 +45,24 @@ function kadence_child_enqueue_styles() {
     // Enqueue jQuery if not already loaded
     wp_enqueue_script('jquery');
     
+    // Enqueue custom checkout validation script
+    if (is_page() && has_shortcode(get_post()->post_content, 'single_page_checkout')) {
+        wp_enqueue_script(
+            'checkout-validation',
+            get_stylesheet_directory_uri() . '/checkout-validation.js',
+            array('jquery'),
+            '1.0.0',
+            true
+        );
+        
+        // Pass AJAX URL and nonce to the script
+        wp_localize_script('checkout-validation', 'checkout_ajax', array(
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('spc_nonce'),
+            'min_products' => 3 // Minimum products required
+        ));
+    }
+    
     // Let WooCommerce handle its own scripts on the checkout page.
     // The [woocommerce_checkout] shortcode will trigger the necessary script enqueues.
     if (is_page() && has_shortcode(get_post()->post_content, 'single_page_checkout')) {
@@ -113,6 +131,8 @@ class SinglePageCheckout {
         add_action('wp_ajax_nopriv_spc_get_cart_item_key', array(__CLASS__, 'ajax_get_cart_item_key'));
         add_action('wp_ajax_spc_get_cart_content', array(__CLASS__, 'ajax_get_cart_content'));
         add_action('wp_ajax_nopriv_spc_get_cart_content', array(__CLASS__, 'ajax_get_cart_content'));
+        add_action('wp_ajax_spc_get_cart_count', array(__CLASS__, 'ajax_get_cart_count'));
+        add_action('wp_ajax_nopriv_spc_get_cart_count', array(__CLASS__, 'ajax_get_cart_count'));
         
         // Add shortcode for custom order received page
         add_shortcode('custom_order_received', array(__CLASS__, 'custom_order_received_shortcode'));
@@ -681,6 +701,37 @@ class SinglePageCheckout {
             'cart_html' => self::get_cart_content(),
             'order_review_html' => self::get_order_review(),
             'total_amount' => $total_amount
+        ));
+    }
+
+    /**
+     * AJAX handler for getting cart count
+     */
+    public static function ajax_get_cart_count() {
+        if (!check_ajax_referer('spc_nonce', 'nonce', false)) {
+            wp_send_json_error('Security check failed');
+            return;
+        }
+        
+        if (!self::is_cart_available()) {
+            wp_send_json_error('Cart is not available');
+            return;
+        }
+        
+        // Get enabler product ID to exclude from count
+        $enabler_id = get_option('spc_enabler_product_id');
+        $real_product_count = 0;
+        
+        // Count only real products (excluding enabler product)
+        foreach (WC()->cart->get_cart() as $cart_item) {
+            if ($cart_item['product_id'] != $enabler_id) {
+                $real_product_count += $cart_item['quantity'];
+            }
+        }
+        
+        wp_send_json_success(array(
+            'count' => $real_product_count,
+            'has_min_products' => $real_product_count >= 3
         ));
     }
     

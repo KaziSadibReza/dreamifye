@@ -120,6 +120,10 @@ if (!defined('ABSPATH')) {
             </div>
 
             <!-- Checkout Form Section -->
+            <div class="checkout-message"
+                style="display: none; padding: 20px; margin: 20px 0; background: #fff3cd; border: 2px solid #ffc107; border-radius: 8px; text-align: center; color: #856404; font-size: 16px;">
+                <strong>আমাদের থেকে মিনিমাম ৩ পিস অর্ডার করতে হবে</strong><br>
+            </div>
             <div id="spc-checkout-section" class="spc-checkout-section"
                 style="display: <?php echo (WC()->cart && !WC()->cart->is_empty()) ? 'block' : 'none'; ?>;">
                 <div class="spc-card">

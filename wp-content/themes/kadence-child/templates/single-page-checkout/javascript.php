@@ -243,6 +243,9 @@ if (!defined('ABSPATH')) {
                         SPC.updateCheckoutContent(response.data.checkout_html);
                         SPC.showToast(`${productTitle} added to cart!`, 'success',
                             'Product Added');
+                        
+                        // Trigger cart validation check
+                        $(document).trigger('spc_cart_updated');
                     } else {
                         SPC.showToast(response.data || 'Failed to add product to cart', 'error',
                             'Error');
@@ -301,6 +304,9 @@ if (!defined('ABSPATH')) {
                         SPC.updateCheckoutContent(response.data.checkout_html);
                         SPC.showToast(`${productTitle} removed from cart`, 'success',
                             'Product Removed');
+                        
+                        // Trigger cart validation check
+                        $(document).trigger('spc_cart_updated');
                     } else {
                         SPC.showToast(response.data || 'Failed to remove product from cart',
                             'error', 'Error');
@@ -344,6 +350,9 @@ if (!defined('ABSPATH')) {
                         SPC.updateCheckoutContent(response.data.checkout_html);
                         SPC.showToast(`${productTitle} removed from cart`, 'success',
                             'Product Removed');
+                        
+                        // Trigger cart validation check
+                        $(document).trigger('spc_cart_updated');
                     } else {
                         SPC.showToast(response.data || 'Failed to remove product from cart',
                             'error', 'Error');
@@ -387,6 +396,9 @@ if (!defined('ABSPATH')) {
 
                         const actionText = action === 'increase' ? 'increased' : 'decreased';
                         SPC.showToast(`${productTitle} quantity ${actionText}`, 'success');
+                        
+                        // Trigger cart validation check
+                        $(document).trigger('spc_cart_updated');
                     } else {
                         SPC.showToast(response.data || 'Failed to update quantity', 'error',
                             'Error');
