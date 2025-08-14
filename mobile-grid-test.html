@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mobile Grid Test</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      .test-info {
+        background: #f0f0f0;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 5px;
+      }
+      .mobile {
+        background-color: #e8f5e8;
+      }
+      .desktop {
+        background-color: #f5e8e8;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Single Page Checkout - Mobile Grid Test</h1>
+
+    <div id="current-state" class="test-info">
+      <h3>Current State:</h3>
+      <p>Screen Width: <span id="screen-width"></span>px</p>
+      <p>Device Type: <span id="device-type"></span></p>
+      <p>Default View: <span id="default-view"></span></p>
+    </div>
+
+    <div class="test-info">
+      <h3>Test Results:</h3>
+      <ul>
+        <li>Mobile devices (≤768px) → Default: <strong>Grid</strong></li>
+        <li>Desktop devices (>768px) → Default: <strong>Slider</strong></li>
+      </ul>
+    </div>
+
+    <div class="test-info">
+      <h3>Resize Instructions:</h3>
+      <p>
+        Resize your browser window to test responsive behavior. The default view
+        should change automatically:
+      </p>
+      <ul>
+        <li>Narrow window (mobile simulation) = Grid default</li>
+        <li>Wide window (desktop) = Slider default</li>
+      </ul>
+    </div>
+
+    <script>
+      function updateTestInfo() {
+        const screenWidth = window.innerWidth;
+        const isMobile = screenWidth <= 768;
+        const defaultView = isMobile ? "grid" : "slider";
+        const deviceType = isMobile ? "Mobile" : "Desktop";
+
+        document.getElementById("screen-width").textContent = screenWidth;
+        document.getElementById("device-type").textContent = deviceType;
+        document.getElementById("default-view").textContent = defaultView;
+
+        const currentState = document.getElementById("current-state");
+        currentState.className =
+          "test-info " + (isMobile ? "mobile" : "desktop");
+      }
+
+      // Update on load
+      updateTestInfo();
+
+      // Update on resize (with debouncing)
+      let resizeTimer;
+      window.addEventListener("resize", function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(updateTestInfo, 100);
+      });
+
+      console.log("Mobile Grid Test: JavaScript logic loaded successfully");
+    </script>
+  </body>
+</html>

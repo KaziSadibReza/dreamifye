@@ -29,6 +29,7 @@ if (!defined('ABSPATH')) {
             this.bindEvents();
             this.loadProducts();
             this.initializeCart();
+            this.handleResponsiveChanges();
 
             console.log('SPC Modern JavaScript v3.1.0 Loaded with Category Support');
         },
@@ -47,33 +48,85 @@ if (!defined('ABSPATH')) {
             });
         },
 
+        handleResponsiveChanges: function() {
+            let resizeTimer;
+            $(window).on('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function() {
+                    SPC.adjustLayoutForScreenSize();
+                }, 250); // Debounce resize events
+            });
+        },
+
+        adjustLayoutForScreenSize: function() {
+            const isMobile = window.innerWidth <= 768;
+            const targetView = isMobile ? 'grid' : 'slider';
+            
+            $('.spc-category-section').each(function() {
+                const categorySlug = $(this).data('category');
+                const $currentActiveBtn = $(`.spc-view-btn[data-category="${categorySlug}"].active`);
+                const currentView = $currentActiveBtn.data('view');
+                
+                // Only switch if the current view doesn't match the target view for this screen size
+                if (currentView !== targetView) {
+                    const $targetBtn = $(`.spc-view-btn[data-category="${categorySlug}"][data-view="${targetView}"]`);
+                    if ($targetBtn.length) {
+                        $targetBtn.trigger('click');
+                    }
+                }
+            });
+        },
+
         loadProducts: function() {
             // Show loader initially
             $('#spc-products-loading').show();
             $('#spc-products-grid').hide();
 
-            // Show slider card loader by default (since default is slider)
-            $('.spc-card-loader-slider').show();
-            $('.spc-card-loader-grid').hide();
+            // Detect if device is mobile (768px and below)
+            const isMobile = window.innerWidth <= 768;
+            const defaultView = isMobile ? 'grid' : 'slider';
+
+            // Show appropriate card loader based on default view
+            if (defaultView === 'grid') {
+                $('.spc-card-loader-slider').hide();
+                $('.spc-card-loader-grid').show();
+            } else {
+                $('.spc-card-loader-slider').show();
+                $('.spc-card-loader-grid').hide();
+            }
 
             // Simulate loading delay
             setTimeout(() => {
                 $('#spc-products-loading').fadeOut(300, function() {
                     $('#spc-products-grid').fadeIn(300, function() {
-                        // Initialize all category layouts - Default to slider view for all categories
+                        // Initialize all category layouts - Default to grid for mobile, slider for desktop
                         $('.spc-category-section').each(function() {
                             const categorySlug = $(this).data('category');
-                            $(`.spc-view-btn[data-category="${categorySlug}"][data-view="slider"]`)
-                                .addClass('active');
-                            $(`.spc-view-btn[data-category="${categorySlug}"][data-view="grid"]`)
-                                .removeClass('active');
-                            $(`.spc-products-slider[data-category="${categorySlug}"]`)
-                                .addClass('active').show();
-                            $(`.spc-products-grid[data-category="${categorySlug}"]`)
-                                .removeClass('active').hide();
+                            
+                            if (defaultView === 'grid') {
+                                // Set grid as default for mobile
+                                $(`.spc-view-btn[data-category="${categorySlug}"][data-view="grid"]`)
+                                    .addClass('active');
+                                $(`.spc-view-btn[data-category="${categorySlug}"][data-view="slider"]`)
+                                    .removeClass('active');
+                                $(`.spc-products-grid[data-category="${categorySlug}"]`)
+                                    .addClass('active').show();
+                                $(`.spc-products-slider[data-category="${categorySlug}"]`)
+                                    .removeClass('active').hide();
+                            } else {
+                                // Set slider as default for desktop
+                                $(`.spc-view-btn[data-category="${categorySlug}"][data-view="slider"]`)
+                                    .addClass('active');
+                                $(`.spc-view-btn[data-category="${categorySlug}"][data-view="grid"]`)
+                                    .removeClass('active');
+                                $(`.spc-products-slider[data-category="${categorySlug}"]`)
+                                    .addClass('active').show();
+                                $(`.spc-products-grid[data-category="${categorySlug}"]`)
+                                    .removeClass('active').hide();
 
-                            // Initialize swiper for this category
-                            SPC.initSwiper(categorySlug);
+                                // Initialize swiper for this category (only for slider view)
+                                SPC.initSwiper(categorySlug);
+                            }
                         });
 
                         // Load cart content after products are displayed
